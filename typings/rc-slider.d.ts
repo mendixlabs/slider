@@ -5,7 +5,7 @@ declare module "rc-slider" {
     interface RcSliderProps {
         min?: number;
         max?: number;
-        step?: number | undefined;
+        step?: number | undefined | null;
         defaultValue?: number | (Number | undefined)[] | undefined;
         value?: number | Array<Number>;
         marks?: Marks;

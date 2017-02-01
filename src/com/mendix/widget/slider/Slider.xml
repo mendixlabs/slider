@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="com.mendix.widget.slider.Slider" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>Slider</name>
+    <description>Displays a value on a slider</description>
+    <icon/>
+    <properties>
+        <property key="valueAttribute" required="false" type="attribute">
+            <caption>Value attribute</caption>
+            <category>Data source</category>
+            <description>The selected value on the slider</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+                <attributeType name="Long"/>
+                <attributeType name="Float"/>
+                <attributeType name="Decimal"/>
+            </attributeTypes>
+        </property>
+        <property key="minAttribute" type="attribute">
+            <caption>Minimum attribute</caption>
+            <category>Data source</category>
+            <description>Holds the minimum slider value</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+                <attributeType name="Long"/>
+                <attributeType name="Float"/>
+                <attributeType name="Decimal"/>
+            </attributeTypes>
+        </property>
+        <property key="maxAttribute" type="attribute">
+            <caption>Maximum attribute</caption>
+            <category>Data source</category>
+            <description>Holds the maximum slider value</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+                <attributeType name="Long"/>
+                <attributeType name="Float"/>
+                <attributeType name="Decimal"/>
+            </attributeTypes>
+        </property>
+        <property key="onClickMicroflow" type="microflow" required="false">
+            <caption>On click microflow</caption>
+            <category>Behavior</category>
+            <description>Called when the slider is clicked or changed</description>
+            <returnType type="Void"/>
+        </property>
+        <property key="noOfMarkers" type="integer" required="true" defaultValue="2">
+            <caption>Number of Markers</caption>
+            <category>Appearance</category>
+            <description>Visible when larger than 2</description>
+        </property>
+        <property key="tooltipText" type="string" required="false" defaultValue="{1}">
+            <caption>Tooltip text</caption>
+            <category>Appearance</category>
+            <description>Text to show when hovering over the slider value. Leave this empty to disable the tooltip. Use {1} as a replacement for the current value of the slider</description>
+        </property>
+        <property key="stepAttribute" type="attribute" required="false">
+            <caption>Step attribute</caption>
+            <category>Appearance</category>
+            <description>Holds the value for the number of points to shift when sliding</description>
+            <attributeTypes>
+                <attributeType name="Integer"/>
+                <attributeType name="Long"/>
+                <attributeType name="Float"/>
+                <attributeType name="Decimal"/>
+            </attributeTypes>
+        </property>
+        <property key="stepValue" type="integer" required="true" defaultValue="10">
+            <caption>Step value</caption>
+            <category>Appearance</category>
+            <description>Number of points to shift when sliding (Used if step attribute is not set)</description>
+        </property>
+        <property key="decimalPlaces" type="integer" required="true" defaultValue="1">
+            <caption>Decimal places</caption>
+            <category>Appearance</category>
+            <description>Number of decimal places to show on a value</description>
+        </property>
+    </properties>
+</widget>
