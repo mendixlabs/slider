@@ -3,8 +3,8 @@ declare module "rc-slider" {
     interface RcSlider extends React.ComponentClass<RcSliderProps> {}
 
     interface RcSliderProps {
-        min?: number;
-        max?: number;
+        min?: number | null;
+        max?: number | null;
         step?: number | undefined | null;
         defaultValue?: number | (Number | undefined)[] | undefined;
         value?: number | Array<Number>;

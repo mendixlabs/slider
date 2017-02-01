@@ -12,8 +12,8 @@ export interface SliderProps {
     hasError?: boolean;
     value?: number;
     noOfMarkers?: number;
-    maxValue?: number;
-    minValue?: number;
+    maxValue?: number | null;
+    minValue?: number | null;
     validationMessage?: string;
     onClick?: (value: number) => void;
     onChange?: (value: number) => void;
@@ -46,7 +46,8 @@ export class Slider extends Component<SliderProps, {}> {
     }
 
     render() {
-        const alertMessage = this.validateSettings(this.props) || this.props.validationMessage;
+        const alertMessage = this.validateSettings(this.props)
+            || this.validateValues(this.props) || this.props.validationMessage;
 
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
             createElement(RcSlider, {
@@ -63,7 +64,7 @@ export class Slider extends Component<SliderProps, {}> {
                 tipFormatter: this.props.tooltipText ? this.getTooltipText : null,
                 value: typeof this.props.value === "number" ? this.props.value : this.calculateDefaultValue(this.props)
             }),
-            this.showError(alertMessage)
+            alertMessage && !this.props.disabled ? createElement(Alert, { message: alertMessage }) : null
         );
     }
 
@@ -98,12 +99,6 @@ export class Slider extends Component<SliderProps, {}> {
         if (!validMin) {
             message.push("Minimum value is required");
         }
-        if (props.value > props.maxValue) {
-            message.push(`Value ${props.value} should be less than the maximum ${props.maxValue}`);
-        }
-        if (props.value < props.minValue) {
-            message.push(`Value ${props.value} should be greater than the minimum ${props.minValue}`);
-        }
         if (validMin && validMax && (props.minValue >= props.maxValue)) {
             message.push(`Minimum value ${props.minValue} should be less than the maximum value ${props.maxValue}`);
         }
@@ -117,21 +112,23 @@ export class Slider extends Component<SliderProps, {}> {
         return message.join(", ");
     }
 
+    private validateValues(props: SliderProps): string {
+        const message: string[] = [];
+        if (props.value > props.maxValue) {
+            message.push(`Value ${props.value} should be less than the maximum ${props.maxValue}`);
+        }
+        if (props.value < props.minValue) {
+            message.push(`Value ${props.value} should be greater than the minimum ${props.minValue}`);
+        }
+
+        return message.join(", ");
+    }
+
     private getTooltipText(value: number): string {
         if (this.props.value === undefined) {
             return "--";
         }
 
         return this.props.tooltipText ? this.props.tooltipText.replace(/\{1}/, value.toString()) : value.toString();
-    }
-
-    private showError(alertMessage: string | undefined): React.ReactNode {
-        if (alertMessage && !this.props.disabled) {
-            return createElement(Alert, { message: alertMessage });
-        } else if (alertMessage) {
-            window.logger.warn(alertMessage);
-        }
-
-        return null;
     }
 }
