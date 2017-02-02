@@ -52,7 +52,7 @@ export class Slider extends Component<SliderProps, {}> {
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
             createElement(RcSlider, {
                 disabled: !!this.validateSettings(this.props) || this.props.disabled,
-                included: false,
+                included: true,
                 marks: this.calculateMarks(this.props),
                 max: this.props.maxValue,
                 min: this.props.minValue,

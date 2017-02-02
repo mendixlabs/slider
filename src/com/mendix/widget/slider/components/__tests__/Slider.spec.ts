@@ -10,15 +10,20 @@ import { Alert } from "../Alert";
 describe("Slider", () => {
     let sliderProps: SliderProps;
     let slider: ShallowWrapper<SliderProps, any>;
+    const value = 20;
+    const maxValue = 100;
+    const minValue = 0;
+    const stepValue = 1;
+    const noOfMarkers = 0;
     beforeEach(() => {
         sliderProps = {
             disabled: false,
-            maxValue: 100,
-            minValue: 0,
-            noOfMarkers: 0,
-            stepValue: 1,
+            maxValue,
+            minValue,
+            noOfMarkers,
+            stepValue,
             tooltipText: "{1}",
-            value: 20
+            value
         };
     });
     const renderSlider = (props: SliderProps) => shallow(createElement(SliderComponent, props));
@@ -30,12 +35,12 @@ describe("Slider", () => {
             DOM.div({ className: "widget-slider" },
                 createElement(RcSlider, {
                     disabled: false,
-                    included: false,
-                    max: 100,
-                    min: 0,
-                    step: 1,
+                    included: true,
+                    max: maxValue,
+                    min: minValue,
+                    step: stepValue,
                     tipFormatter: jasmine.any(Function) as any,
-                    value: 20,
+                    value,
                     vertical: false
                 })
             )
@@ -65,7 +70,9 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const alert = slider.find(Alert);
 
-            expect(alert.props().message).toBe("Minimum value 50 should be less than the maximum value 30");
+            expect(alert.props().message).toBe(
+                `Minimum value ${sliderProps.minValue} should be less than the maximum value ${sliderProps.maxValue}`
+            );
         });
     });
 
@@ -90,7 +97,9 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const alert = slider.find(Alert);
 
-            expect(alert.props().message).toBe("Value 150 should be less than the maximum 100");
+            expect(alert.props().message).toBe(
+                `Value ${sliderProps.value} should be less than the maximum ${sliderProps.maxValue}`
+            );
         });
 
         it("less than minimum value shows an error", () => {
@@ -98,7 +107,9 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const alert = slider.find(Alert);
 
-            expect(alert.props().message).toBe("Value -10 should be greater than the minimum 0");
+            expect(alert.props().message).toBe(
+                `Value ${sliderProps.value} should be greater than the minimum ${sliderProps.minValue}`
+            );
         });
     });
 
@@ -108,7 +119,7 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const alert = slider.find(Alert);
 
-            expect(alert.props().message).toBe("Step value 0 should be greater than 0");
+            expect(alert.props().message).toBe(`Step value ${sliderProps.stepValue} should be greater than 0`);
         });
 
         it("when the step value is less than 0", () => {
@@ -116,7 +127,7 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const alert = slider.find(Alert);
 
-            expect(alert.props().message).toBe("Step value -10 should be greater than 0");
+            expect(alert.props().message).toBe(`Step value ${sliderProps.stepValue} should be greater than 0`);
         });
 
         it("when the step value does not evenly divide (maximum - minimum)", () => {
