@@ -37,8 +37,8 @@
                 <attributeType name="Decimal"/>
             </attributeTypes>
         </property>
-        <property key="onClickMicroflow" type="microflow" required="false">
-            <caption>On click microflow</caption>
+        <property key="onChangeMicroflow" type="microflow" required="false">
+            <caption>On change microflow</caption>
             <category>Behavior</category>
             <description>Called when the slider is clicked or changed</description>
             <returnType type="Void"/>
