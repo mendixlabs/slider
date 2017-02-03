@@ -1,8 +1,8 @@
 # Slider
-Displays a value on a slider.
+Displays a value on a slider
 
 ## Features
-* Show or change a value on a slider
+* Change a number value on a slider
 * Execute a microflow when a slider value is changed or clicked
 * Show or hide a tooltip on hover
 

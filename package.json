@@ -1,7 +1,7 @@
 {
   "name": "slider",
   "version": "0.1.0",
-  "description": "Displays a value on a slider",
+  "description": "Change a number value using a slider",
   "scripts": {
     "pretest": "tsc",
     "test": "karma start --single-run --sourceMapping && node tests/remap.js"
