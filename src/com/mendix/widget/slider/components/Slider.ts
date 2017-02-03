@@ -3,8 +3,8 @@ import { Component, DOM, createElement } from "react";
 import * as classNames from "classnames";
 import * as RcSlider from "rc-slider";
 
-import "../ui/Slider.css";
 import "rc-slider/dist/rc-slider.css";
+import "../ui/Slider.css";
 
 import { Alert } from "./Alert";
 
@@ -15,8 +15,8 @@ export interface SliderProps {
     maxValue?: number | null;
     minValue?: number | null;
     validationMessage?: string;
-    onClick?: (value: number) => void;
     onChange?: (value: number) => void;
+    onUpdate?: (value: number) => void;
     stepValue?: number;
     tooltipText?: string | null;
     disabled: boolean;
@@ -56,8 +56,8 @@ export class Slider extends Component<SliderProps, {}> {
                 marks: this.calculateMarks(this.props),
                 max: this.props.maxValue,
                 min: this.props.minValue,
-                onAfterChange: this.props.onClick,
-                onChange: this.props.onChange,
+                onAfterChange: this.props.onChange,
+                onChange: this.props.onUpdate,
                 pushable: false,
                 range: false,
                 step: this.props.stepValue ? this.props.stepValue : null,

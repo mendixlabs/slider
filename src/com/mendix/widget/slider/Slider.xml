@@ -72,7 +72,7 @@
         <property key="decimalPlaces" type="integer" required="true" defaultValue="1">
             <caption>Decimal places</caption>
             <category>Appearance</category>
-            <description>Number of decimal places to show on a value</description>
+            <description>Number of decimal places</description>
         </property>
     </properties>
 </widget>

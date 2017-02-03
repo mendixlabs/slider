@@ -22,7 +22,7 @@ class Slider extends WidgetBase {
 
     postCreate() {
         this.handleAction = this.handleAction.bind(this);
-        this.onChange = this.onChange.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
     }
 
     update(contextObject: mendix.lib.MxObject, callback?: Function) {
@@ -52,8 +52,8 @@ class Slider extends WidgetBase {
             maxValue: this.getAttributeValue(this.maxAttribute),
             minValue: this.getAttributeValue(this.minAttribute),
             noOfMarkers: this.noOfMarkers,
-            onChange: this.onChange,
-            onClick : this.handleAction,
+            onChange: this.handleAction,
+            onUpdate: this.onUpdate,
             stepValue: this.getAttributeValue(this.stepAttribute, this.stepValue),
             tooltipText: this.tooltipText,
             value: this.getAttributeValue(this.valueAttribute),
@@ -78,7 +78,7 @@ class Slider extends WidgetBase {
         }
     }
 
-    private onChange(value: number) {
+    private onUpdate(value: number) {
         if (value || value === 0) {
             if (value > this.getAttributeValue(this.maxAttribute)) {
                 this.contextObject.set(this.valueAttribute, this.getAttributeValue(this.maxAttribute));
