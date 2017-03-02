@@ -137,7 +137,7 @@ class Slider extends WidgetBase {
 }
 
 // tslint:disable : only-arrow-functions
-dojoDeclare("com.mendix.widget.slider.Slider", [ WidgetBase ], function(Source: any) {
+dojoDeclare("com.mendix.widget.custom.slider.Slider", [ WidgetBase ], function(Source: any) {
     const result: any = {};
     for (const property in Source.prototype) {
         if (property !== "constructor" && Source.prototype.hasOwnProperty(property)) {
