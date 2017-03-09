@@ -1,4 +1,4 @@
-import { Component, DOM, createElement } from "react";
+import { Component, createElement, DOM } from "react";
 
 import * as classNames from "classnames";
 import * as RcSlider from "rc-slider";
@@ -14,7 +14,7 @@ export interface SliderProps {
     noOfMarkers?: number;
     maxValue?: number | null;
     minValue?: number | null;
-    validationMessage?: string;
+    alertMessage?: string;
     onChange?: (value: number) => void;
     onUpdate?: (value: number) => void;
     stepValue?: number;
@@ -46,9 +46,7 @@ export class Slider extends Component<SliderProps, {}> {
     }
 
     render() {
-        const alertMessage = this.validateSettings(this.props)
-            || this.validateValues(this.props) || this.props.validationMessage;
-
+        const { alertMessage } = this.props;
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
             createElement(RcSlider, {
                 disabled: !!alertMessage || this.props.disabled,
@@ -87,41 +85,6 @@ export class Slider extends Component<SliderProps, {}> {
 
     private calculateDefaultValue(props: SliderProps): number {
         return this.isValidMinMax(props) ? props.minValue + (props.maxValue - props.minValue) / 2 : 0;
-    }
-
-    private validateSettings(props: SliderProps): string {
-        const message: string[] = [];
-        const validMax = typeof props.maxValue === "number";
-        const validMin = typeof props.minValue === "number";
-        if (!validMax) {
-            message.push("Maximum value is required");
-        }
-        if (!validMin) {
-            message.push("Minimum value is required");
-        }
-        if (validMin && validMax && (props.minValue >= props.maxValue)) {
-            message.push(`Minimum value ${props.minValue} should be less than the maximum value ${props.maxValue}`);
-        }
-        if (!props.stepValue || props.stepValue <= 0) {
-            message.push(`Step value ${props.stepValue} should be greater than 0`);
-        } else if (validMax && validMin && (props.maxValue - props.minValue) % props.stepValue > 0) {
-            message.push(`Step value is invalid, max - min (${props.maxValue} - ${props.minValue}) 
-            should be evenly divisible by the step value ${props.stepValue}`);
-        }
-
-        return message.join(", ");
-    }
-
-    private validateValues(props: SliderProps): string {
-        const message: string[] = [];
-        if (props.value > props.maxValue) {
-            message.push(`Value ${props.value} should be less than the maximum ${props.maxValue}`);
-        }
-        if (props.value < props.minValue) {
-            message.push(`Value ${props.value} should be greater than the minimum ${props.minValue}`);
-        }
-
-        return message.join(", ");
     }
 
     private getTooltipText(value: number): string {
