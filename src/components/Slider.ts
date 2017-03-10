@@ -9,11 +9,10 @@ import "../ui/Slider.css";
 import { Alert } from "./Alert";
 
 export interface SliderProps {
-    hasError?: boolean;
     value?: number;
     noOfMarkers?: number;
-    maxValue?: number | null;
-    minValue?: number | null;
+    maxValue?: number;
+    minValue?: number;
     alertMessage?: string;
     onChange?: (value: number) => void;
     onUpdate?: (value: number) => void;
@@ -49,7 +48,7 @@ export class Slider extends Component<SliderProps, {}> {
         const { alertMessage } = this.props;
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
             createElement(RcSlider, {
-                disabled: !!alertMessage || this.props.disabled,
+                disabled: this.props.disabled,
                 included: true,
                 marks: this.calculateMarks(this.props),
                 max: this.props.maxValue,
@@ -68,11 +67,14 @@ export class Slider extends Component<SliderProps, {}> {
 
     private calculateMarks(props: SliderProps): Marks {
         const marks: Marks = {};
-        if (this.isValidMinMax(props) && props.noOfMarkers >= 2) {
-            const interval = (props.maxValue - props.minValue) / (props.noOfMarkers - 1);
-            for (let i = 0; i < props.noOfMarkers; i++) {
-                const value = parseFloat((props.minValue + (i * interval)).toFixed(props.decimalPlaces));
-                marks[value] = value;
+        const { noOfMarkers, maxValue, minValue } = props;
+        if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
+            if (this.isValidMinMax(props) && noOfMarkers >= 2) {
+                const interval = (maxValue - minValue) / (noOfMarkers - 1);
+                for (let i = 0; i < noOfMarkers; i++) {
+                    const value = parseFloat((minValue + (i * interval)).toFixed(props.decimalPlaces));
+                    marks[value] = value;
+                }
             }
         }
         return marks;
@@ -84,7 +86,10 @@ export class Slider extends Component<SliderProps, {}> {
     }
 
     private calculateDefaultValue(props: SliderProps): number {
-        return this.isValidMinMax(props) ? props.minValue + (props.maxValue - props.minValue) / 2 : 0;
+        const { minValue, maxValue } = props;
+        return (this.isValidMinMax(props) && (minValue || minValue === 0) && (maxValue || maxValue === 0))
+            ? minValue + (maxValue - minValue) / 2
+            : 0;
     }
 
     private getTooltipText(value: number): string {

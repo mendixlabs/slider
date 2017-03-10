@@ -52,7 +52,6 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
             alertMessage,
             decimalPlaces: this.props.decimalPlaces,
             disabled,
-            hasError: !!alertMessage,
             maxValue: this.state.maximumValue,
             minValue: this.state.minimumValue,
             noOfMarkers: this.props.noOfMarkers,
@@ -60,7 +59,7 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
             onUpdate: this.onUpdate,
             stepValue: this.state.stepValue,
             tooltipText: this.props.tooltipText,
-            value: this.state.value as number
+            value: this.state.value
         });
     }
 
@@ -93,9 +92,10 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
 
     private onUpdate(value: number) {
         const { contextObject, valueAttribute } = this.props;
+        const { maximumValue } = this.state;
         if (value || value === 0) {
-            if (value > this.state.maximumValue) {
-                contextObject.set(valueAttribute, this.state.maximumValue);
+            if ((maximumValue || maximumValue === 0) && (value > maximumValue)) {
+                contextObject.set(valueAttribute, maximumValue);
             } else {
                 contextObject.set(valueAttribute, value);
             }
@@ -160,14 +160,16 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
         if (!validMin) {
             message.push("Minimum value is required");
         }
-        if (validMin && validMax && (minimumValue >= maximumValue)) {
-            message.push(`Minimum value ${minimumValue} should be less than the maximum value ${maximumValue}`);
-        }
-        if (!stepValue || stepValue <= 0) {
-            message.push(`Step value ${stepValue} should be greater than 0`);
-        } else if (validMax && validMin && (maximumValue - minimumValue) % stepValue > 0) {
-            message.push(`Step value is invalid, max - min (${maximumValue} - ${minimumValue}) 
+        if (typeof maximumValue === "number" && typeof minimumValue === "number") {
+            if (validMin && validMax && (minimumValue >= maximumValue)) {
+                message.push(`Minimum value ${minimumValue} should be less than the maximum value ${maximumValue}`);
+            }
+            if (!stepValue || stepValue <= 0) {
+                message.push(`Step value ${stepValue} should be greater than 0`);
+            } else if (validMax && validMin && (maximumValue - minimumValue) % stepValue > 0) {
+                message.push(`Step value is invalid, max - min (${maximumValue} - ${minimumValue}) 
             should be evenly divisible by the step value ${stepValue}`);
+            }
         }
 
         return message.join(", ");
@@ -176,11 +178,13 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
     private validateValues(): string {
         const message: string[] = [];
         const { minimumValue, maximumValue, value } = this.state;
-        if (value > maximumValue) {
-            message.push(`Value ${value} should be less than the maximum ${maximumValue}`);
-        }
-        if (value < minimumValue) {
-            message.push(`Value ${value} should be greater than the minimum ${minimumValue}`);
+        if (typeof minimumValue === "number" && typeof maximumValue === "number" && typeof value === "number") {
+            if (value > maximumValue) {
+                message.push(`Value ${value} should be less than the maximum ${maximumValue}`);
+            }
+            if (value < minimumValue) {
+                message.push(`Value ${value} should be greater than the minimum ${minimumValue}`);
+            }
         }
 
         return message.join(", ");

@@ -58,7 +58,7 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 
-            expect(RcSliderComponent.props().value).toBe((sliderProps.maxValue - sliderProps.minValue) / 2);
+            expect(RcSliderComponent.props().value).toBe((maxValue - minValue) / 2);
         });
     });
 
