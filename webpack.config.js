@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
-    entry: "./src/Slider.ts",
+    entry: "./src/components/SliderContainer.ts",
     output: {
         path: path.resolve(__dirname, "dist/tmp"),
         filename: "src/com/mendix/widget/custom/slider/Slider.js",
@@ -25,14 +25,14 @@ module.exports = {
         ]
     },
     devtool: "source-map",
-    externals: [ "mxui/widget/_WidgetBase", "dojo/_base/declare" ],
+    externals: [ "react", "react-dom" ],
     plugins: [
         new CopyWebpackPlugin([
             { from: "src/**/*.js" },
             { from: "src/**/*.xml" }
         ], {
-            copyUnmodified: true
-        }),
+                copyUnmodified: true
+            }),
         new ExtractTextPlugin("./src/com/mendix/widget/custom/slider/ui/Slider.css")
     ],
     watch: true
