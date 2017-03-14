@@ -2,11 +2,11 @@ import { Component, createElement } from "react";
 
 import { Slider } from "./Slider";
 
-export interface SliderContainerProps {
-    contextObject: mendix.lib.MxObject;
+interface SliderContainerProps {
+    mxObject: mendix.lib.MxObject;
     valueAttribute: string;
-    maximumAttribute: string;
-    minimumAttribute: string;
+    maxAttribute: string;
+    minAttribute: string;
     onChangeMicroflow: string;
     stepValue: number;
     stepAttribute: string;
@@ -23,28 +23,28 @@ interface SliderContainerState {
     stepValue?: number;
 }
 
-export class SliderContainer extends Component<SliderContainerProps, SliderContainerState> {
+class SliderContainer extends Component<SliderContainerProps, SliderContainerState> {
     private subscriptionHandles: number[];
 
     constructor(props: SliderContainerProps) {
         super(props);
 
         this.state = {
-            maximumValue: this.getAttributeValue(props.contextObject, props.maximumAttribute),
-            minimumValue: this.getAttributeValue(props.contextObject, props.minimumAttribute),
-            stepValue: this.getAttributeValue(props.contextObject, props.stepAttribute, props.stepValue),
-            value: this.getAttributeValue(props.contextObject, props.valueAttribute)
+            maximumValue: this.getAttributeValue(this.props.mxObject, props.maxAttribute),
+            minimumValue: this.getAttributeValue(this.props.mxObject, props.minAttribute),
+            stepValue: this.getAttributeValue(this.props.mxObject, props.stepAttribute, props.stepValue),
+            value: this.getAttributeValue(this.props.mxObject, props.valueAttribute)
         };
         this.subscriptionHandles = [];
-        this.resetSubscriptions(props.contextObject);
+        this.resetSubscriptions(this.props.mxObject);
         this.handleAction = this.handleAction.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
     }
 
     render() {
-        const disabled = !this.props.contextObject
+        const disabled = !this.props.mxObject
             || this.props.readOnly
-            || !!(this.props.stepAttribute && this.props.contextObject.isReadonlyAttr(this.props.stepAttribute));
+            || !!(this.props.stepAttribute && this.props.mxObject.isReadonlyAttr(this.props.stepAttribute));
 
         const alertMessage = this.validateSettings() || this.validateValues();
 
@@ -64,8 +64,8 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
     }
 
     componentWillReceiveProps(newProps: SliderContainerProps) {
-        this.resetSubscriptions(newProps.contextObject);
-        this.updateValues(newProps.contextObject);
+        this.resetSubscriptions(newProps.mxObject);
+        this.updateValues(newProps.mxObject);
     }
 
     componentWillUnmount() {
@@ -87,28 +87,28 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
 
     private updateValues(contextObject: mendix.lib.MxObject) {
         this.setState({
-            maximumValue: this.getAttributeValue(contextObject, this.props.maximumAttribute),
-            minimumValue: this.getAttributeValue(contextObject, this.props.minimumAttribute),
+            maximumValue: this.getAttributeValue(contextObject, this.props.maxAttribute),
+            minimumValue: this.getAttributeValue(contextObject, this.props.minAttribute),
             stepValue: this.getAttributeValue(contextObject, this.props.stepAttribute, this.props.stepValue),
             value: this.getAttributeValue(contextObject, this.props.valueAttribute)
         });
     }
 
     private onUpdate(value: number) {
-        const { contextObject, valueAttribute } = this.props;
+        const { mxObject, valueAttribute } = this.props;
         const { maximumValue } = this.state;
         if (value || value === 0) {
             if ((maximumValue || maximumValue === 0) && (value > maximumValue)) {
-                contextObject.set(valueAttribute, maximumValue);
+                mxObject.set(valueAttribute, maximumValue);
             } else {
-                contextObject.set(valueAttribute, value);
+                mxObject.set(valueAttribute, value);
             }
         }
     }
 
     private handleAction(value: number) {
         if (value || value === 0) {
-            this.executeMicroflow(this.props.onChangeMicroflow, this.props.contextObject.getGuid());
+            this.executeMicroflow(this.props.onChangeMicroflow, this.props.mxObject.getGuid());
         }
     }
 
@@ -136,8 +136,8 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
             }));
             [
                 this.props.valueAttribute,
-                this.props.maximumAttribute,
-                this.props.minimumAttribute,
+                this.props.maxAttribute,
+                this.props.minAttribute,
                 this.props.stepAttribute
             ].forEach((attr) =>
                 this.subscriptionHandles.push(window.mx.data.subscribe({
@@ -194,3 +194,5 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
         return message.join(", ");
     }
 }
+
+export { SliderContainer as default, SliderContainerProps };
