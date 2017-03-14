@@ -68,6 +68,10 @@ export class SliderContainer extends Component<SliderContainerProps, SliderConta
         this.updateValues(newProps.contextObject);
     }
 
+    componentWillUnmount() {
+        this.unSubscribe();
+    }
+
     private getAttributeValue(
         contextObject: mendix.lib.MxObject,
         attributeName: string,
