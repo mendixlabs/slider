@@ -43,10 +43,9 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     render() {
         const disabled = !this.props.mxObject
-            || this.props.readOnly
             || !!(this.props.stepAttribute && this.props.mxObject.isReadonlyAttr(this.props.stepAttribute));
 
-        const alertMessage = this.validateSettings() || this.validateValues();
+        const alertMessage = !disabled ? this.validateSettings() || this.validateValues() : "";
 
         return createElement(Slider, {
             alertMessage,
