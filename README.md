@@ -7,7 +7,7 @@ Displays a value on a slider
 * Show or hide a tooltip on hover
 
 ## Dependencies
-Mendix 6
+Mendix 7.1
 
 ## Demo project
 https://slider.mxapps.io/
