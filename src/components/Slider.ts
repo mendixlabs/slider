@@ -15,12 +15,12 @@ export interface SliderProps {
     maxValue?: number;
     minValue?: number;
     alertMessage?: string;
-    onChange?: (value: number) => void;
-    onUpdate?: (value: number) => void;
     stepValue?: number;
-    tooltipText?: string | null;
     disabled: boolean;
     decimalPlaces?: number;
+    onChange?: (value: number) => void;
+    onUpdate?: (value: number) => void;
+    tooltipText?: string | null;
 }
 
 interface Marks {
@@ -47,17 +47,20 @@ export class Slider extends Component<SliderProps, {}> {
 
     render() {
         const { alertMessage } = this.props;
+        const included = true;
+        const pushable = false;
+        const range = false;
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
             createElement(RcSlider, {
                 disabled: this.props.disabled,
-                included: true,
+                included,
                 marks: this.calculateMarks(this.props),
                 max: this.props.maxValue,
                 min: this.props.minValue,
                 onAfterChange: this.props.onChange,
                 onChange: this.props.onUpdate,
-                pushable: false,
-                range: false,
+                pushable,
+                range,
                 step: this.props.stepValue,
                 tipFormatter: this.props.tooltipText ? this.getTooltipText : null,
                 value: typeof this.props.value === "number" ? this.props.value : this.calculateDefaultValue(this.props)
