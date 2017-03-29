@@ -1,12 +1,13 @@
-import { Component, createElement, DOM } from "react";
+import { Component, DOM, createElement } from "react";
 
 import * as classNames from "classnames";
 import * as RcSlider from "rc-slider";
 
-import "rc-slider/dist/rc-slider.css";
-import "../ui/Slider.css";
-
 import { Alert } from "./Alert";
+
+import "rc-slider/dist/rc-slider.css";
+
+import "../ui/Slider.css";
 
 export interface SliderProps {
     value?: number;
@@ -61,7 +62,7 @@ export class Slider extends Component<SliderProps, {}> {
                 tipFormatter: this.props.tooltipText ? this.getTooltipText : null,
                 value: typeof this.props.value === "number" ? this.props.value : this.calculateDefaultValue(this.props)
             }),
-            alertMessage && !this.props.disabled ? createElement(Alert, { message: alertMessage }) : null
+            createElement(Alert, { message: alertMessage })
         );
     }
 
