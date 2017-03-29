@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "rc-slider": "^5.4.0",
+    "rc-slider": "^6.3.1",
     "react": "~15.3.2",
     "react-dom": "~15.3.2"
   }
