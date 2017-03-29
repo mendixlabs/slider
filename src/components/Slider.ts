@@ -63,7 +63,7 @@ export class Slider extends Component<SliderProps, {}> {
                 range,
                 step: this.props.stepValue,
                 tipFormatter: this.props.tooltipText ? this.getTooltipText : null,
-                value: typeof this.props.value === "number" ? this.props.value : this.calculateDefaultValue(this.props)
+                value: this.getValidValue()
             }),
             createElement(Alert, { message: alertMessage })
         );
@@ -73,7 +73,7 @@ export class Slider extends Component<SliderProps, {}> {
         const marks: Marks = {};
         const { noOfMarkers, maxValue, minValue } = props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
-            if (this.isValidMinMax(props) && noOfMarkers >= 2) {
+            if (this.isValidMinMax() && noOfMarkers >= 2) {
                 const interval = (maxValue - minValue) / (noOfMarkers - 1);
                 for (let i = 0; i < noOfMarkers; i++) {
                     const value = parseFloat((minValue + (i * interval)).toFixed(props.decimalPlaces));
@@ -84,16 +84,28 @@ export class Slider extends Component<SliderProps, {}> {
         return marks;
     }
 
-    private isValidMinMax(props: SliderProps): boolean {
-        const { maxValue, minValue } = props;
+    private isValidMinMax(): boolean {
+        const { maxValue, minValue } = this.props;
         return typeof maxValue === "number" && typeof minValue === "number" && minValue < maxValue;
     }
 
-    private calculateDefaultValue(props: SliderProps): number {
-        const { minValue, maxValue } = props;
-        return (this.isValidMinMax(props) && (minValue || minValue === 0) && (maxValue || maxValue === 0))
-            ? minValue + (maxValue - minValue) / 2
-            : 0;
+    private getValidValue(): number | undefined {
+        const { minValue, maxValue, value } = this.props;
+        if ((minValue || minValue === 0) && (maxValue || maxValue === 0)) {
+            if (value || value === 0) {
+                if (value > maxValue) {
+                    return maxValue;
+                }
+                if (value < minValue) {
+                    return minValue;
+                }
+            }
+            if (this.isValidMinMax()) {
+                return (minValue + (maxValue - minValue) / 2);
+            }
+        }
+
+        return 0;
     }
 
     private getTooltipText(value: number): string {
