@@ -1,4 +1,4 @@
-import { Component, DOM, createElement } from "react";
+import { Component, createElement, DOM } from "react";
 
 import * as classNames from "classnames";
 import * as RcSlider from "rc-slider";
@@ -54,7 +54,7 @@ export class Slider extends Component<SliderProps, {}> {
             createElement(RcSlider, {
                 disabled: this.props.disabled,
                 included,
-                marks: this.calculateMarks(this.props),
+                marks: this.calculateMarks(),
                 max: this.props.maxValue,
                 min: this.props.minValue,
                 onAfterChange: this.props.onChange,
@@ -69,14 +69,14 @@ export class Slider extends Component<SliderProps, {}> {
         );
     }
 
-    private calculateMarks(props: SliderProps): Marks {
+    private calculateMarks(): Marks {
         const marks: Marks = {};
-        const { noOfMarkers, maxValue, minValue } = props;
+        const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
             if (this.isValidMinMax() && noOfMarkers >= 2) {
                 const interval = (maxValue - minValue) / (noOfMarkers - 1);
                 for (let i = 0; i < noOfMarkers; i++) {
-                    const value = parseFloat((minValue + (i * interval)).toFixed(props.decimalPlaces));
+                    const value = parseFloat((minValue + (i * interval)).toFixed(this.props.decimalPlaces));
                     marks[value] = value;
                 }
             }
@@ -99,6 +99,7 @@ export class Slider extends Component<SliderProps, {}> {
                 if (value < minValue) {
                     return minValue;
                 }
+                return value;
             }
             if (this.isValidMinMax()) {
                 return (minValue + (maxValue - minValue) / 2);
@@ -109,8 +110,9 @@ export class Slider extends Component<SliderProps, {}> {
     }
 
     private getTooltipText(value: number): string {
+        const textForUndefinedValue = "--";
         if (this.props.value === undefined) {
-            return "--";
+            return textForUndefinedValue;
         }
 
         return this.props.tooltipText ? this.props.tooltipText.replace(/\{1}/, value.toString()) : value.toString();
