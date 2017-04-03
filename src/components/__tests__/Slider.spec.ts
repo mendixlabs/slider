@@ -2,6 +2,7 @@ import { shallow, ShallowWrapper } from "enzyme";
 import { createElement, DOM } from "react";
 
 import * as RcSlider from "rc-slider";
+import { Alert } from "../Alert";
 
 import { Slider as SliderComponent, SliderProps } from "../Slider";
 
@@ -38,9 +39,11 @@ describe("Slider", () => {
                     min: minValue,
                     step: stepValue,
                     tipFormatter: jasmine.any(Function) as any,
+                    pushable: false,
+                    range: false,
                     value,
                     vertical: false
-                })
+                }), createElement(Alert, { message: "" })
             )
         );
     });
