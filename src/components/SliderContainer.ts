@@ -25,6 +25,7 @@ interface SliderContainerState {
 
 class SliderContainer extends Component<SliderContainerProps, SliderContainerState> {
     private subscriptionHandles: number[];
+    private attributeCallback: (mxObject: mendix.lib.MxObject) => () => void;
 
     constructor(props: SliderContainerProps) {
         super(props);
@@ -39,6 +40,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         this.resetSubscriptions(this.props.mxObject);
         this.handleAction = this.handleAction.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
+        this.attributeCallback = mxObject => () => this.updateValues(mxObject);
     }
 
     render() {
@@ -128,7 +130,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
         if (mxObject) {
             this.subscriptionHandles.push(window.mx.data.subscribe({
-                callback: () => this.updateValues(mxObject),
+                callback: this.attributeCallback(mxObject),
                 guid: mxObject.getGuid()
             }));
             [
@@ -139,7 +141,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             ].forEach((attr) =>
                 this.subscriptionHandles.push(window.mx.data.subscribe({
                     attr,
-                    callback: () => this.updateValues(mxObject),
+                    callback: this.attributeCallback(mxObject),
                     guid: mxObject.getGuid()
                 }))
                 );
