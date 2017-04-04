@@ -144,7 +144,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
                     callback: this.attributeCallback(mxObject),
                     guid: mxObject.getGuid()
                 }))
-                );
+            );
         }
     }
 
