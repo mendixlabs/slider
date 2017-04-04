@@ -4,7 +4,7 @@ import { createElement, DOM } from "react";
 import * as RcSlider from "rc-slider";
 import { Alert } from "../Alert";
 
-import { Slider as SliderComponent, SliderProps } from "../Slider";
+import { Slider, SliderProps } from "../Slider";
 
 describe("Slider", () => {
     let sliderProps: SliderProps;
@@ -25,7 +25,7 @@ describe("Slider", () => {
             value
         };
     });
-    const renderSlider = (props: SliderProps) => shallow(createElement(SliderComponent, props));
+    const renderSlider = (props: SliderProps) => shallow(createElement(Slider, props));
 
     it("renders the structure", () => {
         slider = renderSlider(sliderProps);
@@ -39,8 +39,6 @@ describe("Slider", () => {
                     min: minValue,
                     step: stepValue,
                     tipFormatter: jasmine.any(Function) as any,
-                    pushable: false,
-                    range: false,
                     value,
                     vertical: false
                 }), createElement(Alert, { message: "" })
@@ -57,7 +55,7 @@ describe("Slider", () => {
         });
 
         it("that is undefined renders a slider with the calculated default value", () => {
-            sliderProps.value = undefined;
+            sliderProps.value = null;
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 
@@ -92,7 +90,7 @@ describe("Slider", () => {
         });
 
         it("renders a tooltip with '--' when no slider value is specified", () => {
-            sliderProps.value = undefined;
+            sliderProps.value = null;
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 

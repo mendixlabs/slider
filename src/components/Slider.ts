@@ -1,16 +1,16 @@
 import { Component, createElement, DOM } from "react";
 
 import * as classNames from "classnames";
-import * as RcSlider from "rc-slider";
+import * as rcSlider from "rc-slider";
+import * as Tooltip from "rc-tooltip";
 
 import { Alert } from "./Alert";
 
 import "rc-slider/dist/rc-slider.css";
-
 import "../ui/Slider.css";
 
 export interface SliderProps {
-    value?: number;
+    value: number | null;
     noOfMarkers?: number;
     maxValue?: number;
     minValue?: number;
@@ -23,20 +23,10 @@ export interface SliderProps {
     tooltipText?: string | null;
 }
 
-interface Marks {
-    [key: number]: string | number | {
-        style: HTMLStyleElement,
-        label: string
-    };
-}
-
 export class Slider extends Component<SliderProps, {}> {
     static defaultProps: SliderProps = {
         disabled: false,
-        maxValue: 100,
-        minValue: 0,
-        noOfMarkers: 2,
-        tooltipText: "{1}"
+        value: 0
     };
 
     constructor(props: SliderProps) {
@@ -48,29 +38,38 @@ export class Slider extends Component<SliderProps, {}> {
     render() {
         const { alertMessage } = this.props;
         const included = true;
-        const pushable = false;
-        const range = false;
+        const Handle = rcSlider.Handle;
+        const handle = (props: any) => {
+            const { value, dragging, index, ...restProps } = props;
+            return (createElement(Tooltip, {
+                key: index,
+                mouseLeaveDelay: 0,
+                overlay: this.getTooltipText(value) as any,
+                placement: "top",
+                prefixCls: "rc-slider-tooltip",
+                trigger: this.props.tooltipText ? [ "hover" ] : []
+            }, createElement(Handle, { ...restProps })));
+        };
+
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
-            createElement(RcSlider, {
+            createElement(rcSlider, {
                 disabled: this.props.disabled,
+                handle,
                 included,
                 marks: this.calculateMarks(),
                 max: this.props.maxValue,
                 min: this.props.minValue,
                 onAfterChange: this.props.onChange,
                 onChange: this.props.onUpdate,
-                pushable,
-                range,
                 step: this.props.stepValue,
-                tipFormatter: this.props.tooltipText ? this.getTooltipText : null,
                 value: this.getValidValue()
             }),
             createElement(Alert, { message: alertMessage })
         );
     }
 
-    private calculateMarks(): Marks {
-        const marks: Marks = {};
+    private calculateMarks(): rcSlider.Marks {
+        const marks: any = {};
         const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
             if (this.isValidMinMax() && noOfMarkers >= 2) {
@@ -111,7 +110,7 @@ export class Slider extends Component<SliderProps, {}> {
 
     private getTooltipText(value: number): string {
         const textForUndefinedValue = "--";
-        if (this.props.value === undefined) {
+        if (this.props.value === null) {
             return textForUndefinedValue;
         }
 

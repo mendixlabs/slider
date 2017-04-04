@@ -19,7 +19,7 @@ interface SliderContainerProps {
 interface SliderContainerState {
     maximumValue?: number;
     minimumValue?: number;
-    value?: number;
+    value: number | null;
     stepValue?: number;
 }
 
@@ -33,7 +33,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             maximumValue: this.getAttributeValue(this.props.mxObject, props.maxAttribute),
             minimumValue: this.getAttributeValue(this.props.mxObject, props.minAttribute),
             stepValue: this.getAttributeValue(this.props.mxObject, props.stepAttribute, props.stepValue),
-            value: this.getAttributeValue(this.props.mxObject, props.valueAttribute)
+            value: this.getAttributeValue(this.props.mxObject, props.valueAttribute) || null
         };
         this.subscriptionHandles = [];
         this.resetSubscriptions(this.props.mxObject);
@@ -85,11 +85,12 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     private updateValues(contextObject: mendix.lib.MxObject) {
+        const value = this.getAttributeValue(contextObject, this.props.valueAttribute);
         this.setState({
             maximumValue: this.getAttributeValue(contextObject, this.props.maxAttribute),
             minimumValue: this.getAttributeValue(contextObject, this.props.minAttribute),
             stepValue: this.getAttributeValue(contextObject, this.props.stepAttribute, this.props.stepValue),
-            value: this.getAttributeValue(contextObject, this.props.valueAttribute)
+            value: (value || value === 0) ? value : null
         });
     }
 
