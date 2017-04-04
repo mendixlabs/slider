@@ -70,7 +70,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     componentWillUnmount() {
-        this.unSubscribe();
+        this.subscriptionHandles.forEach((handle) => window.mx.data.unsubscribe(handle));
     }
 
     private getValue(mxObject: mendix.lib.MxObject, attributeName: string, defaultValue?: number): number | undefined {
@@ -126,7 +126,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     private resetSubscriptions(mxObject: mendix.lib.MxObject) {
-        this.unSubscribe();
+        this.subscriptionHandles.forEach((handle) => window.mx.data.unsubscribe(handle));
 
         if (mxObject) {
             this.subscriptionHandles.push(window.mx.data.subscribe({
@@ -146,10 +146,6 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
                 }))
             );
         }
-    }
-
-    private unSubscribe() {
-        this.subscriptionHandles.forEach((handle) => window.mx.data.unsubscribe(handle));
     }
 
     private validateSettings(): string {
