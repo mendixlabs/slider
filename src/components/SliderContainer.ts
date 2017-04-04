@@ -30,10 +30,10 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         super(props);
 
         this.state = {
-            maximumValue: this.getAttributeValue(this.props.mxObject, props.maxAttribute),
-            minimumValue: this.getAttributeValue(this.props.mxObject, props.minAttribute),
-            stepValue: this.getAttributeValue(this.props.mxObject, props.stepAttribute, props.stepValue),
-            value: this.getAttributeValue(this.props.mxObject, props.valueAttribute) || null
+            maximumValue: this.getValue(this.props.mxObject, props.maxAttribute),
+            minimumValue: this.getValue(this.props.mxObject, props.minAttribute),
+            stepValue: this.getValue(this.props.mxObject, props.stepAttribute, props.stepValue),
+            value: this.getValue(this.props.mxObject, props.valueAttribute) || null
         };
         this.subscriptionHandles = [];
         this.resetSubscriptions(this.props.mxObject);
@@ -71,25 +71,22 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         this.unSubscribe();
     }
 
-    private getAttributeValue(
-        contextObject: mendix.lib.MxObject,
-        attributeName: string,
-        defaultValue?: number): number | undefined {
-        if (contextObject && attributeName) {
-            if (contextObject.get(attributeName)) {
-                return parseFloat(contextObject.get(attributeName) as string);
+    private getValue(mxObject: mendix.lib.MxObject, attributeName: string, defaultValue?: number): number | undefined {
+        if (mxObject && attributeName) {
+            if (mxObject.get(attributeName)) {
+                return parseFloat(mxObject.get(attributeName) as string);
             }
         }
 
         return defaultValue;
     }
 
-    private updateValues(contextObject: mendix.lib.MxObject) {
-        const value = this.getAttributeValue(contextObject, this.props.valueAttribute);
+    private updateValues(mxObject: mendix.lib.MxObject) {
+        const value = this.getValue(mxObject, this.props.valueAttribute);
         this.setState({
-            maximumValue: this.getAttributeValue(contextObject, this.props.maxAttribute),
-            minimumValue: this.getAttributeValue(contextObject, this.props.minAttribute),
-            stepValue: this.getAttributeValue(contextObject, this.props.stepAttribute, this.props.stepValue),
+            maximumValue: this.getValue(mxObject, this.props.maxAttribute),
+            minimumValue: this.getValue(mxObject, this.props.minAttribute),
+            stepValue: this.getValue(mxObject, this.props.stepAttribute, this.props.stepValue),
             value: (value || value === 0) ? value : null
         });
     }
@@ -126,13 +123,13 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         }
     }
 
-    private resetSubscriptions(contextObject: mendix.lib.MxObject) {
+    private resetSubscriptions(mxObject: mendix.lib.MxObject) {
         this.unSubscribe();
 
-        if (contextObject) {
+        if (mxObject) {
             this.subscriptionHandles.push(window.mx.data.subscribe({
-                callback: () => this.updateValues(contextObject),
-                guid: contextObject.getGuid()
+                callback: () => this.updateValues(mxObject),
+                guid: mxObject.getGuid()
             }));
             [
                 this.props.valueAttribute,
@@ -142,8 +139,8 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             ].forEach((attr) =>
                 this.subscriptionHandles.push(window.mx.data.subscribe({
                     attr,
-                    callback: () => this.updateValues(contextObject),
-                    guid: contextObject.getGuid()
+                    callback: () => this.updateValues(mxObject),
+                    guid: mxObject.getGuid()
                 }))
                 );
         }
