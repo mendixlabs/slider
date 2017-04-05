@@ -34,11 +34,11 @@ describe("Slider", () => {
             DOM.div({ className: "widget-slider" },
                 createElement(RcSlider, {
                     disabled: false,
+                    handle: jasmine.any(Function) as any,
                     included: true,
                     max: maxValue,
                     min: minValue,
                     step: stepValue,
-                    tipFormatter: jasmine.any(Function) as any,
                     value,
                     vertical: false
                 }), createElement(Alert, { message: "" })
@@ -46,25 +46,60 @@ describe("Slider", () => {
         );
     });
 
-    describe("with a value", () => {
-        it("renders a slider with the given value", () => {
+    it("renders with a given value", () => {
+        slider = renderSlider(sliderProps);
+        const RcSliderComponent = slider.find(RcSlider);
+
+        expect(RcSliderComponent.props().value).toBe(sliderProps.value);
+    });
+
+    it("renders with negative values", () => {
+        sliderProps.value = -5;
+        sliderProps.maxValue = 0;
+        sliderProps.minValue = -10;
+        slider = renderSlider(sliderProps);
+        const RcSliderComponent = slider.find(RcSlider);
+
+        expect(RcSliderComponent.props().value).toBe(sliderProps.value);
+    });
+
+    it("without a value renders with the calculated value", () => {
+        sliderProps.value = null;
+        slider = renderSlider(sliderProps);
+        const RcSliderComponent = slider.find(RcSlider);
+
+        expect(RcSliderComponent.props().value).toBe((maxValue - minValue) / 2);
+    });
+
+    it("with both invalid minimum and maximum values, renders with the calculated value", () => {
+        sliderProps.maxValue = -10;
+        sliderProps.value = null;
+        slider = renderSlider(sliderProps);
+        const RcSliderComponent = slider.find(RcSlider);
+
+        expect(RcSliderComponent.props().value).toBe(0);
+    });
+
+    describe("with a value that is", () => {
+        it("greater than the maximum value, assigns maximum value to value", () => {
+            sliderProps.value = 150;
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 
-            expect(RcSliderComponent.props().value).toBe(sliderProps.value);
+            expect(RcSliderComponent.props().value).toBe(maxValue);
         });
 
-        it("that is undefined renders a slider with the calculated default value", () => {
-            sliderProps.value = null;
+        it("less than the minimum value, assigns minimum value to value", () => {
+            sliderProps.value = -10;
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 
-            expect(RcSliderComponent.props().value).toBe((maxValue - minValue) / 2);
+            expect(RcSliderComponent.props().value).toBe(minValue);
         });
     });
 
-    describe("with the marker value", () => {
-        it("less than 2 renders no markers", () => {
+    describe("with the marker value that is", () => {
+        it("less than 2, renders no markers on the slider", () => {
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 
@@ -84,32 +119,42 @@ describe("Slider", () => {
         it("renders a tooltip title with the correct text", () => {
             sliderProps.tooltipText = "Slider";
             slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
 
-            expect((RcSliderComponent.props() as any).tipFormatter(sliderProps.tooltipText)).toBe("Slider");
+            const sliderInstance = slider.instance() as any;
+            spyOn(sliderInstance, "createTooltip").and.callThrough();
+            slider.setProps({ tooltipText: sliderProps.tooltipText });
+
+            expect(sliderInstance.createTooltip).toHaveBeenCalledWith({
+                text: sliderProps.tooltipText,
+                value: sliderProps.value
+            });
         });
 
-        it("renders a tooltip with '--' when no slider value is specified", () => {
+        it("renders a tooltip title with '--' when no slider value is specified", () => {
             sliderProps.value = null;
             slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
 
-            expect((RcSliderComponent.props() as any).tipFormatter(sliderProps.tooltipText)).toBe("--");
+            const sliderInstance = slider.instance() as any;
+            spyOn(sliderInstance, "createTooltip").and.callThrough();
+            slider.setProps({ tooltipText: sliderProps.tooltipText });
+
+            expect(sliderInstance.createTooltip).toHaveBeenCalledWith({
+                text: sliderProps.tooltipText,
+                value: null
+            });
         });
+    });
 
-        it("renders no tooltip title when value is empty", () => {
+    describe("without tooltipText value", () => {
+        it("renders no tooltip", () => {
             sliderProps.tooltipText = "";
             slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
 
-            expect(RcSliderComponent.props().tipFormatter).toBeNull();
-        });
+            const sliderInstance = slider.instance() as any;
+            spyOn(sliderInstance, "createTooltip");
+            slider.setProps({ tooltipText: sliderProps.tooltipText });
 
-        it("with a tooltipText template renders a tooltip with the substituted value", () => {
-            slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
-
-            expect((RcSliderComponent.props() as any).tipFormatter(sliderProps.value)).toBe(`${sliderProps.value}`);
+            expect(sliderInstance.createTooltip).not.toHaveBeenCalled();
         });
     });
 });
