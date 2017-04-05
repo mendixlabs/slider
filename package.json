@@ -1,6 +1,6 @@
 {
   "name": "slider",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Change a number value using a slider",
   "scripts": {
     "pretest": "tsc",
