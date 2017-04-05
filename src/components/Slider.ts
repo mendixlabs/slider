@@ -118,7 +118,7 @@ export class Slider extends Component<SliderProps, {}> {
                 overlay: DOM.div(null, sliderText),
                 placement: "top",
                 prefixCls: "rc-slider-tooltip",
-                trigger: [ "hover" ]
+                trigger: [ "hover", "click", "focus" ]
             }, createElement(Handle, { className: props.className, vertical: props.vertical, offset: props.offset })));
         }
     }
