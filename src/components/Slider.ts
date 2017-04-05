@@ -120,6 +120,6 @@ export class Slider extends Component<SliderProps, {}> {
                 prefixCls: "rc-slider-tooltip",
                 trigger: [ "hover", "click", "focus" ]
             }, createElement(Handle, { className: props.className, vertical: props.vertical, offset: props.offset })));
-        }
+        };
     }
 }
