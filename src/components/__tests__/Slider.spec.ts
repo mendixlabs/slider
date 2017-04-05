@@ -14,6 +14,7 @@ describe("Slider", () => {
     const minValue = 0;
     const stepValue = 1;
     const noOfMarkers = 0;
+    const marks = { 0: 0, 25: 25, 50: 50, 75: 75, 100: 100 } as any;
     beforeEach(() => {
         sliderProps = {
             disabled: false,
@@ -50,7 +51,7 @@ describe("Slider", () => {
         slider = renderSlider(sliderProps);
         const RcSliderComponent = slider.find(RcSlider);
 
-        expect(RcSliderComponent.props().value).toBe(sliderProps.value);
+        expect(RcSliderComponent.props().value).toBe(value);
     });
 
     it("renders with negative values", () => {
@@ -111,7 +112,7 @@ describe("Slider", () => {
             slider = renderSlider(sliderProps);
             const RcSliderComponent = slider.find(RcSlider);
 
-            expect(RcSliderComponent.props().marks).toEqual({ 0: 0, 25: 25, 50: 50, 75: 75, 100: 100 });
+            expect(RcSliderComponent.props().marks).toEqual(marks);
         });
     });
 

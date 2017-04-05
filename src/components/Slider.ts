@@ -67,14 +67,14 @@ export class Slider extends Component<SliderProps, {}> {
     }
 
     private calculateMarks(): rcSlider.Marks {
-        const marks: any = {};
+        const marks: rcSlider.Marks = {};
         const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
             if (this.isValidMinMax() && noOfMarkers >= 2) {
                 const interval = (maxValue - minValue) / (noOfMarkers - 1);
                 for (let i = 0; i < noOfMarkers; i++) {
                     const value = parseFloat((minValue + (i * interval)).toFixed(this.props.decimalPlaces));
-                    marks[value] = value;
+                    marks[value] = value as any;
                 }
             }
         }
