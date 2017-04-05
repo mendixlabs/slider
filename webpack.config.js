@@ -11,17 +11,18 @@ module.exports = {
         libraryTarget:  "umd"
     },
     resolve: {
-        extensions: [ "", ".ts", ".js", ".json" ],
+        extensions: [ ".ts", ".js", ".json" ],
         alias: {
             "tests": path.resolve(__dirname, "./tests")
         }
     },
-    errorDetails: true,
     module: {
-        loaders: [
+        rules: [
             { test: /\.ts$/, loader: "ts-loader" },
-            { test: /\.json$/, loader: "json" },
-            { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") }
+            { test: /\.css$/, loader: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+            }) }
         ]
     },
     devtool: "source-map",
@@ -33,7 +34,9 @@ module.exports = {
         ], {
                 copyUnmodified: true
             }),
-        new ExtractTextPlugin("./src/com/mendix/widget/custom/slider/ui/Slider.css")
-    ],
-    watch: true
+        new ExtractTextPlugin({ filename:"./src/com/mendix/widget/custom/slider/ui/Slider.css" }),
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        })
+    ]
 };
