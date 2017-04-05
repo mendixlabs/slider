@@ -1,13 +1,25 @@
-import { Component, createElement, DOM } from "react";
+import { Component, createElement, DOM, ReactNode } from "react";
 
 import * as classNames from "classnames";
 import * as rcSlider from "rc-slider";
-import * as Tooltip from "rc-tooltip";
+import * as tooltip from "rc-tooltip";
 
 import { Alert } from "./Alert";
 
 import "rc-slider/dist/rc-slider.css";
 import "../ui/Slider.css";
+
+interface Settings {
+    text: string;
+    value: number | null;
+}
+
+interface TooltipProps {
+    value: number;
+    className: string;
+    vertical: boolean;
+    offset: number;
+}
 
 export interface SliderProps {
     value: number | null;
@@ -31,30 +43,16 @@ export class Slider extends Component<SliderProps, {}> {
 
     constructor(props: SliderProps) {
         super(props);
-
-        this.getTooltipText = this.getTooltipText.bind(this);
     }
 
     render() {
-        const { alertMessage } = this.props;
+        const { alertMessage, tooltipText } = this.props;
         const included = true;
-        const Handle = rcSlider.Handle;
-        const handle = (props: any) => {
-            const { value, dragging, index, ...restProps } = props;
-            return (createElement(Tooltip, {
-                key: index,
-                mouseLeaveDelay: 0,
-                overlay: this.getTooltipText(value) as any,
-                placement: "top",
-                prefixCls: "rc-slider-tooltip",
-                trigger: this.props.tooltipText ? [ "hover" ] : []
-            }, createElement(Handle, { ...restProps })));
-        };
 
         return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
             createElement(rcSlider, {
                 disabled: this.props.disabled,
-                handle,
+                handle: tooltipText ? this.createTooltip({ text: tooltipText, value: this.props.value }) : undefined,
                 included,
                 marks: this.calculateMarks(),
                 max: this.props.maxValue,
@@ -108,12 +106,20 @@ export class Slider extends Component<SliderProps, {}> {
         return 0;
     }
 
-    private getTooltipText(value: number): string {
-        const textForUndefinedValue = "--";
-        if (this.props.value === null) {
-            return textForUndefinedValue;
-        }
+    private createTooltip(tooltipProps: Settings): ((props: TooltipProps) => ReactNode) | undefined {
+        return (props) => {
+            const Handle = rcSlider.Handle;
+            const sliderText = tooltipProps.value === null
+                ? "--"
+                : tooltipProps.text.replace(/\{1}/, props.value.toString());
 
-        return this.props.tooltipText ? this.props.tooltipText.replace(/\{1}/, value.toString()) : value.toString();
+            return (createElement(tooltip, {
+                mouseLeaveDelay: 0,
+                overlay: DOM.div(null, sliderText),
+                placement: "top",
+                prefixCls: "rc-slider-tooltip",
+                trigger: [ "hover" ]
+            }, createElement(Handle, { className: props.className, vertical: props.vertical, offset: props.offset })));
+        }
     }
 }
