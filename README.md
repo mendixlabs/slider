@@ -5,6 +5,7 @@ Displays a value on a slider
 * Change a number value on a slider
 * Execute a microflow when a slider value is changed or clicked
 * Show or hide a tooltip on hover
+* Render slider with different colors
 
 ## Dependencies
 Mendix 7.1

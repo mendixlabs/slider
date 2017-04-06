@@ -33,6 +33,7 @@ export interface SliderProps {
     onChange?: (value: number) => void;
     onUpdate?: (value: number) => void;
     tooltipText?: string | null;
+    color?: string;
 }
 
 export class Slider extends Component<SliderProps, {}> {
@@ -49,7 +50,11 @@ export class Slider extends Component<SliderProps, {}> {
         const { alertMessage, tooltipText } = this.props;
         const included = true;
 
-        return DOM.div({ className: classNames("widget-slider", { "has-error": !!alertMessage }) },
+        return DOM.div({
+            className: classNames("widget-slider", `widget-slider-${this.props.color}`, {
+                "has-error": !!alertMessage
+            })
+        },
             createElement(rcSlider, {
                 disabled: this.props.disabled,
                 handle: tooltipText ? this.createTooltip({ text: tooltipText, value: this.props.value }) : undefined,

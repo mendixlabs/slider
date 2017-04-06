@@ -15,8 +15,10 @@ describe("Slider", () => {
     const stepValue = 1;
     const noOfMarkers = 0;
     const marks = { 0: 0, 25: 25, 50: 50, 75: 75, 100: 100 } as any;
+    const color = "primary";
     beforeEach(() => {
         sliderProps = {
+            color,
             disabled: false,
             maxValue,
             minValue,
@@ -32,7 +34,7 @@ describe("Slider", () => {
         slider = renderSlider(sliderProps);
 
         expect(slider).toBeElement(
-            DOM.div({ className: "widget-slider" },
+            DOM.div({ className: "widget-slider widget-slider-primary" },
                 createElement(RcSlider, {
                     disabled: false,
                     handle: jasmine.any(Function) as any,

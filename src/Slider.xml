@@ -74,5 +74,19 @@
             <category>Appearance</category>
             <description>Number of decimal places</description>
         </property>
+        <property key="color" type="enumeration" defaultValue="primary">
+            <caption>Color</caption>
+            <category>Appearance</category>
+            <description>Color of the slider</description>
+            <enumerationValues>
+                <enumerationValue key="default">Default</enumerationValue>
+                <enumerationValue key="inverse">Inverse</enumerationValue>
+                <enumerationValue key="primary">Primary</enumerationValue>
+                <enumerationValue key="info">Info</enumerationValue>
+                <enumerationValue key="success">Success</enumerationValue>
+                <enumerationValue key="warning">Warning</enumerationValue>
+                <enumerationValue key="danger">Danger</enumerationValue>
+            </enumerationValues>
+        </property>
     </properties>
 </widget>

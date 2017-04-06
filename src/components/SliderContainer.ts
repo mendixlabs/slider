@@ -14,6 +14,7 @@ interface SliderContainerProps {
     tooltipText: string;
     decimalPlaces: number;
     readOnly: boolean;
+    color: string;
 }
 
 interface SliderContainerState {
@@ -51,6 +52,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
         return createElement(Slider, {
             alertMessage,
+            color: this.props.color,
             decimalPlaces: this.props.decimalPlaces,
             disabled,
             maxValue: this.state.maximumValue,
