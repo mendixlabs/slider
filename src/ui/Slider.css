@@ -10,6 +10,11 @@
     background-color: #a94442;
 }
 
+.rc-slider-mark-text {
+    width: auto !important;
+    margin-left: -4px !important;
+}
+
 .rc-slider.rc-slider-with-marks {
     padding-bottom: 25px;
 }
