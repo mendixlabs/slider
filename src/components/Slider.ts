@@ -1,15 +1,15 @@
 import { Component, createElement, DOM, ReactNode } from "react";
 
 import * as classNames from "classnames";
-import * as rcSlider from "rc-slider";
-import * as tooltip from "rc-tooltip";
+import * as RCSlider from "rc-slider";
+import * as Tooltip from "rc-tooltip";
 
 import { Alert } from "./Alert";
 
 import "rc-slider/dist/rc-slider.css";
 import "../ui/Slider.css";
 
-interface Settings {
+interface TooltipOptions {
     text: string;
     value: number | null;
 }
@@ -42,23 +42,19 @@ export class Slider extends Component<SliderProps, {}> {
         value: 0
     };
 
-    constructor(props: SliderProps) {
-        super(props);
-    }
-
     render() {
         const { alertMessage, tooltipText } = this.props;
-        const included = true;
 
-        return DOM.div({
-            className: classNames("widget-slider", `widget-slider-${this.props.color}`, {
-                "has-error": !!alertMessage
-            })
-        },
-            createElement(rcSlider, {
+        return DOM.div(
+            {
+                className: classNames("widget-slider", `widget-slider-${this.props.color}`, {
+                    "has-error": !!alertMessage
+                })
+            },
+            createElement(RCSlider, {
                 disabled: this.props.disabled,
                 handle: tooltipText ? this.createTooltip({ text: tooltipText, value: this.props.value }) : undefined,
-                included,
+                included: true,
                 marks: this.calculateMarks(),
                 max: this.props.maxValue,
                 min: this.props.minValue,
@@ -71,8 +67,8 @@ export class Slider extends Component<SliderProps, {}> {
         );
     }
 
-    private calculateMarks(): rcSlider.Marks {
-        const marks: rcSlider.Marks = {};
+    private calculateMarks(): RCSlider.Marks {
+        const marks: RCSlider.Marks = {};
         const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
             if (this.isValidMinMax() && noOfMarkers >= 2) {
@@ -83,6 +79,7 @@ export class Slider extends Component<SliderProps, {}> {
                 }
             }
         }
+
         return marks;
     }
 
@@ -111,20 +108,26 @@ export class Slider extends Component<SliderProps, {}> {
         return 0;
     }
 
-    private createTooltip(tooltipProps: Settings): ((props: TooltipProps) => ReactNode) | undefined {
+    private createTooltip(tooltipProps: TooltipOptions): ((props: TooltipProps) => ReactNode) | undefined {
         return (props) => {
-            const Handle = rcSlider.Handle;
             const sliderText = tooltipProps.value === null
                 ? "--"
                 : tooltipProps.text.replace(/\{1}/, props.value.toString());
 
-            return (createElement(tooltip, {
-                mouseLeaveDelay: 0,
-                overlay: DOM.div(null, sliderText),
-                placement: "top",
-                prefixCls: "rc-slider-tooltip",
-                trigger: [ "hover", "click", "focus" ]
-            }, createElement(Handle, { className: props.className, vertical: props.vertical, offset: props.offset })));
+            return createElement(Tooltip,
+                {
+                    mouseLeaveDelay: 0,
+                    overlay: DOM.div(null, sliderText),
+                    placement: "top",
+                    prefixCls: "rc-slider-tooltip",
+                    trigger: [ "hover", "click", "focus" ]
+                },
+                createElement(RCSlider.Handle, {
+                    className: props.className,
+                    offset: props.offset,
+                    vertical: props.vertical
+                }
+            ));
         };
     }
 }

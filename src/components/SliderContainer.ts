@@ -31,17 +31,11 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     constructor(props: SliderContainerProps) {
         super(props);
 
-        this.state = {
-            maximumValue: this.getValue(this.props.mxObject, props.maxAttribute),
-            minimumValue: this.getValue(this.props.mxObject, props.minAttribute),
-            stepValue: this.getValue(this.props.mxObject, props.stepAttribute, props.stepValue),
-            value: this.getValue(this.props.mxObject, props.valueAttribute) || null
-        };
+        this.state = this.updateValues(props.mxObject);
         this.subscriptionHandles = [];
-        this.resetSubscriptions(this.props.mxObject);
         this.handleAction = this.handleAction.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
-        this.attributeCallback = mxObject => () => this.updateValues(mxObject);
+        this.attributeCallback = mxObject => () => this.setState(this.updateValues(mxObject));
     }
 
     render() {
@@ -68,14 +62,14 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     componentWillReceiveProps(newProps: SliderContainerProps) {
         this.resetSubscriptions(newProps.mxObject);
-        this.updateValues(newProps.mxObject);
+        this.setState(this.updateValues(newProps.mxObject));
     }
 
     componentWillUnmount() {
         this.subscriptionHandles.forEach((handle) => window.mx.data.unsubscribe(handle));
     }
 
-    private getValue(mxObject: mendix.lib.MxObject, attributeName: string, defaultValue?: number): number | undefined {
+    private getValue<T>(mxObject: mendix.lib.MxObject, attributeName: string, defaultValue: T): number | T {
         if (mxObject && attributeName) {
             if (mxObject.get(attributeName)) {
                 return parseFloat(mxObject.get(attributeName) as string);
@@ -85,14 +79,14 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         return defaultValue;
     }
 
-    private updateValues(mxObject: mendix.lib.MxObject) {
-        const value = this.getValue(mxObject, this.props.valueAttribute);
-        this.setState({
-            maximumValue: this.getValue(mxObject, this.props.maxAttribute),
-            minimumValue: this.getValue(mxObject, this.props.minAttribute),
+    private updateValues(mxObject: mendix.lib.MxObject): SliderContainerState {
+        const value = this.getValue(mxObject, this.props.valueAttribute, null);
+        return {
+            maximumValue: this.getValue(mxObject, this.props.maxAttribute, undefined),
+            minimumValue: this.getValue(mxObject, this.props.minAttribute, undefined),
             stepValue: this.getValue(mxObject, this.props.stepAttribute, this.props.stepValue),
             value: (value || value === 0) ? value : null
-        });
+        };
     }
 
     private onUpdate(value: number) {
