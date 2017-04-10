@@ -25,24 +25,20 @@
       true
     ],
     "no-debugger": true,
-    "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-eval": true,
-    "no-inferrable-types": [
-      true
-    ],
+    "no-inferrable-types": true,
     "no-internal-module": true,
     "no-shadowed-variable": true,
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
-    "no-unreachable": true,
     "no-unused-expression": true,
     "no-var-keyword": true,
     "one-line": [
       true,
       "check-catch",
-      "check-else",
       "check-finally",
+      "check-else",
       "check-open-brace",
       "check-whitespace"
     ],
@@ -127,8 +123,29 @@
       }
     ],
     "member-access": false,
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "any",
+        "named-imports-order": "lowercase-last"
+      }
+    ],
     "curly": false,
+    "max-line-length": [
+      true,
+      120
+    ],
     "arrow-parens": false,
     "no-namespace": false
+  },
+  "jsRules": {
+    "trailing-comma": [
+      false
+    ],
+    "object-literal-sort-keys": false,
+    "array-bracket-spacing": [
+      true,
+      "always"
+    ]
   }
 }
