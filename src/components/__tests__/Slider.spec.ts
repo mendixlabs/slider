@@ -14,8 +14,9 @@ describe("Slider", () => {
     const minValue = 0;
     const stepValue = 1;
     const noOfMarkers = 0;
-    const marks = { 0: 0, 25: 25, 50: 50, 75: 75, 100: 100 } as any;
+    const marks: RcSlider.Marks = { 0: "0", 25: "25", 50: "50", 75: "75", 100: "100" };
     const color = "primary";
+
     beforeEach(() => {
         sliderProps = {
             color,
@@ -49,27 +50,24 @@ describe("Slider", () => {
         );
     });
 
-    it("renders with a given value", () => {
-        slider = renderSlider(sliderProps);
-        const RcSliderComponent = slider.find(RcSlider);
+    it("renders with the given value", () => {
+        const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
         expect(RcSliderComponent.props().value).toBe(value);
     });
 
-    it("renders with negative values", () => {
+    it("renders negative values", () => {
         sliderProps.value = -5;
         sliderProps.maxValue = 0;
         sliderProps.minValue = -10;
-        slider = renderSlider(sliderProps);
-        const RcSliderComponent = slider.find(RcSlider);
+        const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
         expect(RcSliderComponent.props().value).toBe(sliderProps.value);
     });
 
     it("without a value renders with the calculated value", () => {
         sliderProps.value = null;
-        slider = renderSlider(sliderProps);
-        const RcSliderComponent = slider.find(RcSlider);
+        const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
         expect(RcSliderComponent.props().value).toBe((maxValue - minValue) / 2);
     });
@@ -77,42 +75,37 @@ describe("Slider", () => {
     it("with both invalid minimum and maximum values, renders with the calculated value", () => {
         sliderProps.maxValue = -10;
         sliderProps.value = null;
-        slider = renderSlider(sliderProps);
-        const RcSliderComponent = slider.find(RcSlider);
+        const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
         expect(RcSliderComponent.props().value).toBe(0);
     });
 
-    describe("with a value that is", () => {
-        it("greater than the maximum value, assigns maximum value to value", () => {
+    describe("with a value", () => {
+        it("greater than the maximum value, sets the maximum value as the value", () => {
             sliderProps.value = 150;
-            slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
+            const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
             expect(RcSliderComponent.props().value).toBe(maxValue);
         });
 
-        it("less than the minimum value, assigns minimum value to value", () => {
+        it("less than the minimum value, sets the minimum value as the value", () => {
             sliderProps.value = -10;
-            slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
+            const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
             expect(RcSliderComponent.props().value).toBe(minValue);
         });
     });
 
-    describe("with the marker value that is", () => {
-        it("less than 2, renders no markers on the slider", () => {
-            slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
+    describe("with the marker value", () => {
+        it("less than 2, renders no markers", () => {
+            const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
             expect(RcSliderComponent.props().marks).toEqual({});
         });
 
-        it("greater than 2 renders markers on the slider", () => {
+        it("greater than 2 renders markers", () => {
             sliderProps.noOfMarkers = 5;
-            slider = renderSlider(sliderProps);
-            const RcSliderComponent = slider.find(RcSlider);
+            const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
             expect(RcSliderComponent.props().marks).toEqual(marks);
         });
@@ -133,7 +126,7 @@ describe("Slider", () => {
             });
         });
 
-        it("renders a tooltip title with '--' when no slider value is specified", () => {
+        it("renders '--' as the tooltip title when no slider value is specified", () => {
             sliderProps.value = null;
             slider = renderSlider(sliderProps);
 
@@ -148,16 +141,14 @@ describe("Slider", () => {
         });
     });
 
-    describe("without tooltipText value", () => {
-        it("renders no tooltip", () => {
-            sliderProps.tooltipText = "";
-            slider = renderSlider(sliderProps);
+    it("without tooltip text renders no tooltip", () => {
+        sliderProps.tooltipText = "";
+        slider = renderSlider(sliderProps);
 
-            const sliderInstance = slider.instance() as any;
-            spyOn(sliderInstance, "createTooltip");
-            slider.setProps({ tooltipText: sliderProps.tooltipText });
+        const sliderInstance = slider.instance() as any;
+        spyOn(sliderInstance, "createTooltip");
+        slider.setProps({ tooltipText: sliderProps.tooltipText });
 
-            expect(sliderInstance.createTooltip).not.toHaveBeenCalled();
-        });
+        expect(sliderInstance.createTooltip).not.toHaveBeenCalled();
     });
 });

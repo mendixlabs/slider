@@ -1,5 +1,6 @@
 {
   "name": "slider",
+  "widgetName": "Slider",
   "version": "1.0.0",
   "description": "Change a number value using a slider",
   "scripts": {

@@ -1,7 +1,7 @@
 import { Component, createElement, DOM, ReactNode } from "react";
 
 import * as classNames from "classnames";
-import * as RCSlider from "rc-slider";
+import * as RcSlider from "rc-slider";
 import * as Tooltip from "rc-tooltip";
 
 import { Alert } from "./Alert";
@@ -51,7 +51,7 @@ export class Slider extends Component<SliderProps, {}> {
                     "has-error": !!alertMessage
                 })
             },
-            createElement(RCSlider, {
+            createElement(RcSlider, {
                 disabled: this.props.disabled,
                 handle: tooltipText ? this.createTooltip({ text: tooltipText, value: this.props.value }) : undefined,
                 included: true,
@@ -67,15 +67,15 @@ export class Slider extends Component<SliderProps, {}> {
         );
     }
 
-    private calculateMarks(): RCSlider.Marks {
-        const marks: RCSlider.Marks = {};
+    private calculateMarks(): RcSlider.Marks {
+        const marks: RcSlider.Marks = {};
         const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
             if (this.isValidMinMax() && noOfMarkers >= 2) {
                 const interval = (maxValue - minValue) / (noOfMarkers - 1);
                 for (let i = 0; i < noOfMarkers; i++) {
                     const value = parseFloat((minValue + (i * interval)).toFixed(this.props.decimalPlaces));
-                    marks[value] = value as any;
+                    marks[value] = value.toString();
                 }
             }
         }
@@ -122,7 +122,7 @@ export class Slider extends Component<SliderProps, {}> {
                     prefixCls: "rc-slider-tooltip",
                     trigger: [ "hover", "click", "focus" ]
                 },
-                createElement(RCSlider.Handle, {
+                createElement(RcSlider.Handle, {
                     className: props.className,
                     offset: props.offset,
                     vertical: props.vertical
