@@ -2,7 +2,9 @@
 <widget id="com.mendix.widget.custom.slider.Slider" needsEntityContext="true" offlineCapable="true" xmlns="http://www.mendix.com/widget/1.0/">
     <name>Slider</name>
     <description>Displays a value on a slider</description>
-    <icon/>
+    <icon>
+        iVBORw0KGgoAAAANSUhEUgAAAA8AAAAHCAYAAADXhRcnAAAAAXNSR0IArs4c6QAAAP5JREFUGBljZMACampqVJmYmPSAUgJA/OHfv3+XWlpabmNRiipUWVmpNmHChKrXr1/f/v379w8QDeKDxFFVMjAw8vPzh//580cOJmFkZKQ3a9YsT0VFRWGY2P3799/m5ORsv379+iWYGFDfI0Z5efmctWvXTgbawgDCV69eZYiMjISpAdOMjIwMBw4cYDA1NYWL5+fn5zKqqKj4AyUlYaJSUlKmQGf6AWmR////M4A0Ap3+pre3d5OAgMBpmLq/f/8+h7HhtJubm0ZKSkrD5cuX7z579uwHiAbxQeJwRVAGI7oAiA90jdavX79MgCEuBAzpd2xsbGfu3LlzDV0tAAPUaxUShJrfAAAAAElFTkSuQmCC
+    </icon>
     <properties>
         <property key="valueAttribute" required="false" type="attribute">
             <caption>Value attribute</caption>
