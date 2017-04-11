@@ -65,6 +65,14 @@ describe("Slider", () => {
         expect(RcSliderComponent.props().value).toBe(sliderProps.value);
     });
 
+    it("renders an alert when an alert message is specified", () => {
+        sliderProps.alertMessage = "This is an alert";
+        slider = renderSlider(sliderProps);
+        const alert = slider.find(Alert);
+
+        expect(alert.props().message).toBe(sliderProps.alertMessage);
+    });
+
     it("without a value renders with the calculated value", () => {
         sliderProps.value = null;
         const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
@@ -96,7 +104,28 @@ describe("Slider", () => {
         });
     });
 
+    it("with no maximum value sets the progress value to zero", () => {
+        sliderProps.maxValue = undefined;
+        const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
+
+        expect(RcSliderComponent.props().value).toBe(0);
+    });
+
+    it("with no minimum value sets the progress value to zero", () => {
+        sliderProps.minValue = undefined;
+        const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
+
+        expect(RcSliderComponent.props().value).toBe(0);
+    });
+
     describe("with the marker value", () => {
+        it("undefined, renders no markers", () => {
+            sliderProps.noOfMarkers = undefined;
+            const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
+
+            expect(RcSliderComponent.props().marks).toEqual({});
+        });
+
         it("less than 2, renders no markers", () => {
             const RcSliderComponent = renderSlider(sliderProps).find(RcSlider);
 
