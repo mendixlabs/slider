@@ -22,18 +22,20 @@ interface TooltipProps {
 }
 
 interface SliderProps {
-    value: number | null;
-    noOfMarkers?: number;
+    alertMessage?: string;
+    className?: string;
+    color?: string;
+    decimalPlaces?: number;
+    disabled: boolean;
     maxValue?: number;
     minValue?: number;
-    alertMessage?: string;
-    stepValue?: number;
-    disabled: boolean;
-    decimalPlaces?: number;
+    noOfMarkers?: number;
     onChange?: (value: number) => void;
     onUpdate?: (value: number) => void;
+    stepValue?: number;
+    style?: object;
     tooltipText?: string | null;
-    color?: string;
+    value: number | null;
 }
 
 class Slider extends Component<SliderProps, {}> {
@@ -47,9 +49,10 @@ class Slider extends Component<SliderProps, {}> {
 
         return DOM.div(
             {
-                className: classNames("widget-slider", `widget-slider-${this.props.color}`, {
+                className: classNames("widget-slider", `widget-slider-${this.props.color}`, this.props.className, {
                     "has-error": !!alertMessage
-                })
+                }),
+                style: this.props.style
             },
             createElement(RcSlider, {
                 disabled: this.props.disabled,

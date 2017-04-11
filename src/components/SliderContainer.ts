@@ -2,31 +2,62 @@ import { Component, createElement } from "react";
 
 import { Slider } from "./Slider";
 
-interface SliderContainerProps {
-    mxObject: mendix.lib.MxObject;
-    valueAttribute: string;
+interface WrapperProps {
+    class?: string;
+    mxObject?: mendix.lib.MxObject;
+    style?: string;
+}
+
+interface SliderContainerProps extends WrapperProps {
+    color: string;
+    decimalPlaces: number;
     maxAttribute: string;
     minAttribute: string;
+    noOfMarkers: number;
     onChangeMicroflow: string;
+    readOnly: boolean;
     stepValue: number;
     stepAttribute: string;
-    noOfMarkers: number;
     tooltipText: string;
-    decimalPlaces: number;
-    readOnly: boolean;
-    color: string;
+    valueAttribute: string;
 }
 
 interface SliderContainerState {
     maximumValue?: number;
     minimumValue?: number;
-    value: number | null;
     stepValue?: number;
+    value: number | null;
 }
 
 class SliderContainer extends Component<SliderContainerProps, SliderContainerState> {
     private subscriptionHandles: number[];
     private attributeCallback: (mxObject: mendix.lib.MxObject) => () => void;
+
+    static parseStyle(style = ""): {[key: string]: string} {
+        try {
+            return style.split(";").reduce<{[key: string]: string}>((styleObject, line) => {
+                const pair = line.split(":");
+                if (pair.length === 2) {
+                    const name = pair[0].trim().replace(/(-.)/g, match => match[1].toUpperCase());
+                    styleObject[name] = pair[1].trim();
+                }
+                return styleObject;
+            }, {});
+        } catch (error) {
+            console.log("Failed to parse style", style, error);
+        }
+        return {};
+    }
+
+    static getValue<T>(attribute?: string, mxObject?: mendix.lib.MxObject, defaultValue?: T): number | T | undefined {
+        if (mxObject && attribute) {
+            if (mxObject.get(attribute)) {
+                return parseFloat(mxObject.get(attribute) as string);
+            }
+        }
+
+        return defaultValue;
+    }
 
     constructor(props: SliderContainerProps) {
         super(props);
@@ -46,6 +77,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
         return createElement(Slider, {
             alertMessage,
+            className: this.props.class,
             color: this.props.color,
             decimalPlaces: this.props.decimalPlaces,
             disabled,
@@ -55,6 +87,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             onChange: this.handleAction,
             onUpdate: this.onUpdate,
             stepValue: this.state.stepValue,
+            style: SliderContainer.parseStyle(this.props.style),
             tooltipText: this.props.tooltipText,
             value: this.state.value
         });
@@ -69,23 +102,13 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
     }
 
-    private getValue<T>(mxObject: mendix.lib.MxObject, attributeName: string, defaultValue: T): number | T {
-        if (mxObject && attributeName) {
-            if (mxObject.get(attributeName)) {
-                return parseFloat(mxObject.get(attributeName) as string);
-            }
-        }
-
-        return defaultValue;
-    }
-
-    private updateValues(mxObject: mendix.lib.MxObject): SliderContainerState {
-        const value = this.getValue(mxObject, this.props.valueAttribute, null);
+    private updateValues(mxObject?: mendix.lib.MxObject): SliderContainerState {
+        const value = SliderContainer.getValue(this.props.valueAttribute, mxObject, null);
 
         return {
-            maximumValue: this.getValue(mxObject, this.props.maxAttribute, undefined),
-            minimumValue: this.getValue(mxObject, this.props.minAttribute, undefined),
-            stepValue: this.getValue(mxObject, this.props.stepAttribute, this.props.stepValue),
+            maximumValue: SliderContainer.getValue(this.props.maxAttribute, mxObject, undefined),
+            minimumValue: SliderContainer.getValue(this.props.minAttribute, mxObject, undefined),
+            stepValue: SliderContainer.getValue(this.props.stepAttribute, mxObject, this.props.stepValue),
             value: (value || value === 0) ? value : null
         };
     }
@@ -93,7 +116,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     private onUpdate(value: number) {
         const { mxObject, valueAttribute } = this.props;
         const { maximumValue } = this.state;
-        if (value || value === 0) {
+        if ((value || value === 0) && mxObject) {
             if ((maximumValue || maximumValue === 0) && (value > maximumValue)) {
                 mxObject.set(valueAttribute, maximumValue);
             } else {
@@ -103,7 +126,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     private handleAction(value: number) {
-        if (value || value === 0) {
+        if ((value || value === 0) && this.props.mxObject) {
             this.executeMicroflow(this.props.onChangeMicroflow, this.props.mxObject.getGuid());
         }
     }
@@ -122,7 +145,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         }
     }
 
-    private resetSubscriptions(mxObject: mendix.lib.MxObject) {
+    private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
 
         if (mxObject) {
