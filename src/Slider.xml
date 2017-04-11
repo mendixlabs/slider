@@ -43,7 +43,7 @@
             <returnType type="Void"/>
         </property>
         <property key="noOfMarkers" type="integer" defaultValue="2">
-            <caption>Number of Markers</caption>
+            <caption>Number of markers</caption>
             <category>Appearance</category>
             <description>Visible when larger than 2</description>
         </property>
@@ -65,17 +65,17 @@
         <property key="stepValue" type="integer" defaultValue="10">
             <caption>Step value</caption>
             <category>Appearance</category>
-            <description>Number of points to shift when sliding (Used if step attribute is not set)</description>
+            <description>Number of points to shift when sliding (used if step attribute is not set)</description>
         </property>
         <property key="decimalPlaces" type="integer" defaultValue="1">
             <caption>Decimal places</caption>
             <category>Appearance</category>
             <description>Number of decimal places</description>
         </property>
-        <property key="color" type="enumeration" defaultValue="primary">
-            <caption>Color</caption>
+        <property key="bootstrapStyle" type="enumeration" defaultValue="primary">
+            <caption>Bootstrap style</caption>
             <category>Appearance</category>
-            <description>Color of the slider</description>
+            <description>Bootstrap color to apply to the slider</description>
             <enumerationValues>
                 <enumerationValue key="default">Default</enumerationValue>
                 <enumerationValue key="inverse">Inverse</enumerationValue>

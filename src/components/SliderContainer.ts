@@ -9,7 +9,7 @@ interface WrapperProps {
 }
 
 interface SliderContainerProps extends WrapperProps {
-    color: string;
+    bootstrapStyle: string;
     decimalPlaces: number;
     maxAttribute: string;
     minAttribute: string;
@@ -77,8 +77,8 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
         return createElement(Slider, {
             alertMessage,
+            bootstrapStyle: this.props.bootstrapStyle,
             className: this.props.class,
-            color: this.props.color,
             decimalPlaces: this.props.decimalPlaces,
             disabled,
             maxValue: this.state.maximumValue,

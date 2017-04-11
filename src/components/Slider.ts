@@ -23,8 +23,8 @@ interface TooltipProps {
 
 interface SliderProps {
     alertMessage?: string;
+    bootstrapStyle?: string;
     className?: string;
-    color?: string;
     decimalPlaces?: number;
     disabled: boolean;
     maxValue?: number;
@@ -49,9 +49,14 @@ class Slider extends Component<SliderProps, {}> {
 
         return DOM.div(
             {
-                className: classNames("widget-slider", `widget-slider-${this.props.color}`, this.props.className, {
-                    "has-error": !!alertMessage
-                }),
+                className: classNames(
+                    "widget-slider",
+                    `widget-slider-${this.props.bootstrapStyle}`,
+                    this.props.className,
+                    {
+                        "has-error": !!alertMessage
+                    }
+                ),
                 style: this.props.style
             },
             createElement(RcSlider, {
