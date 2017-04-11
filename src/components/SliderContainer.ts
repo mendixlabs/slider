@@ -66,7 +66,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     componentWillUnmount() {
-        this.subscriptionHandles.forEach((handle) => window.mx.data.unsubscribe(handle));
+        this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
     }
 
     private getValue<T>(mxObject: mendix.lib.MxObject, attributeName: string, defaultValue: T): number | T {
@@ -81,6 +81,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     private updateValues(mxObject: mendix.lib.MxObject): SliderContainerState {
         const value = this.getValue(mxObject, this.props.valueAttribute, null);
+
         return {
             maximumValue: this.getValue(mxObject, this.props.maxAttribute, undefined),
             minimumValue: this.getValue(mxObject, this.props.minAttribute, undefined),
@@ -122,7 +123,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     private resetSubscriptions(mxObject: mendix.lib.MxObject) {
-        this.subscriptionHandles.forEach((handle) => window.mx.data.unsubscribe(handle));
+        this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
 
         if (mxObject) {
             this.subscriptionHandles.push(window.mx.data.subscribe({
@@ -162,8 +163,8 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             if (!stepValue || stepValue <= 0) {
                 message.push(`Step value ${stepValue} should be greater than 0`);
             } else if (validMax && validMin && (maximumValue - minimumValue) % stepValue > 0) {
-                message.push(`Step value is invalid, max - min (${maximumValue} - ${minimumValue}) 
-            should be evenly divisible by the step value ${stepValue}`);
+                message.push(`Step value is invalid: max - min (${maximumValue} - ${minimumValue})
+             should be evenly divisible by the step value ${stepValue}`);
             }
         }
 

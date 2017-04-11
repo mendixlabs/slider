@@ -1,4 +1,4 @@
-import { Component, createElement, DOM, ReactNode } from "react";
+import { Component, DOM, ReactNode, createElement } from "react";
 
 import * as classNames from "classnames";
 import * as RcSlider from "rc-slider";
@@ -21,7 +21,7 @@ interface TooltipProps {
     offset: number;
 }
 
-export interface SliderProps {
+interface SliderProps {
     value: number | null;
     noOfMarkers?: number;
     maxValue?: number;
@@ -36,7 +36,7 @@ export interface SliderProps {
     color?: string;
 }
 
-export class Slider extends Component<SliderProps, {}> {
+class Slider extends Component<SliderProps, {}> {
     static defaultProps: SliderProps = {
         disabled: false,
         value: 0
@@ -85,10 +85,11 @@ export class Slider extends Component<SliderProps, {}> {
 
     private isValidMinMax(): boolean {
         const { maxValue, minValue } = this.props;
+
         return typeof maxValue === "number" && typeof minValue === "number" && minValue < maxValue;
     }
 
-    private getValidValue(): number | undefined {
+    private getValidValue(): number {
         const { minValue, maxValue, value } = this.props;
         if ((minValue || minValue === 0) && (maxValue || maxValue === 0)) {
             if (value || value === 0) {
@@ -108,7 +109,7 @@ export class Slider extends Component<SliderProps, {}> {
         return 0;
     }
 
-    private createTooltip(tooltipProps: TooltipOptions): ((props: TooltipProps) => ReactNode) | undefined {
+    private createTooltip(tooltipProps: TooltipOptions): (props: TooltipProps) => ReactNode {
         return (props) => {
             const sliderText = tooltipProps.value === null
                 ? "--"
@@ -131,3 +132,5 @@ export class Slider extends Component<SliderProps, {}> {
         };
     }
 }
+
+export { Slider, SliderProps };

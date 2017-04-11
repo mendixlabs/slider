@@ -11,7 +11,7 @@ module.exports = {
         libraryTarget:  "umd"
     },
     resolve: {
-        extensions: [ ".ts", ".js", ".json" ],
+        extensions: [ ".ts", ".js" ],
         alias: {
             "tests": path.resolve(__dirname, "./tests")
         }
@@ -29,7 +29,6 @@ module.exports = {
     externals: [ "react", "react-dom" ],
     plugins: [
         new CopyWebpackPlugin([
-            { from: "src/**/*.js" },
             { from: "src/**/*.xml" }
         ], {
                 copyUnmodified: true
