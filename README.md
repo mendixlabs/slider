@@ -2,10 +2,10 @@
 Displays a value on a slider
 
 ## Features
-* Change a number value on a slider
+* Adjust the slider value
 * Execute a microflow when a slider value is changed or clicked
-* Show or hide a tooltip on hover
-* Render slider with different colors
+* Show a tooltip on hover
+* Render slider with different bootstrap colors
 
 ## Dependencies
 Mendix 7.1
@@ -17,7 +17,7 @@ Place the widget in the context of an object that has attributes for maximum val
 https://slider.mxapps.io/
 
 ## Issues, suggestions and feature requests
-We are actively maintaining this widget, please report any issues or suggestion for improvement at
+We are actively maintaining this widget, please report any issues or suggestions for improvement at
 https://github.com/mendixlabs/slider/issues
 
 ## Development
