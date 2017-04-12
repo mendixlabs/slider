@@ -27,7 +27,9 @@
     "no-debugger": true,
     "no-duplicate-variable": true,
     "no-eval": true,
-    "no-inferrable-types": true,
+    "no-inferrable-types": [
+      true
+    ],
     "no-internal-module": true,
     "no-shadowed-variable": true,
     "no-switch-case-fall-through": true,

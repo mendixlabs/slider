@@ -46,16 +46,13 @@ class Slider extends Component<SliderProps, {}> {
 
     render() {
         const { alertMessage, tooltipText } = this.props;
-
         return DOM.div(
             {
                 className: classNames(
                     "widget-slider",
                     `widget-slider-${this.props.bootstrapStyle}`,
                     this.props.className,
-                    {
-                        "has-error": !!alertMessage
-                    }
+                    { "has-error": !!alertMessage }
                 ),
                 style: this.props.style
             },
@@ -75,7 +72,7 @@ class Slider extends Component<SliderProps, {}> {
         );
     }
 
-    private calculateMarks(): RcSlider.Marks {
+  private calculateMarks(): RcSlider.Marks {
         const marks: RcSlider.Marks = {};
         const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
@@ -135,8 +132,8 @@ class Slider extends Component<SliderProps, {}> {
                     className: props.className,
                     offset: props.offset,
                     vertical: props.vertical
-                }
-            ));
+                })
+            );
         };
     }
 }

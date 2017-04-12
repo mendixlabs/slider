@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "dist/tmp"),
         filename: "src/com/mendix/widget/custom/slider/Slider.js",
-        libraryTarget:  "umd"
+        libraryTarget: "umd"
     },
     resolve: {
         extensions: [ ".ts", ".js" ],
@@ -20,22 +20,16 @@ module.exports = {
         rules: [
             { test: /\.ts$/, loader: "ts-loader" },
             { test: /\.css$/, loader: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
+                fallback: "style-loader",
+                use: "css-loader"
             }) }
         ]
     },
     devtool: "source-map",
     externals: [ "react", "react-dom" ],
     plugins: [
-        new CopyWebpackPlugin([
-            { from: "src/**/*.xml" }
-        ], {
-                copyUnmodified: true
-            }),
-        new ExtractTextPlugin({ filename:"./src/com/mendix/widget/custom/slider/ui/Slider.css" }),
-        new webpack.LoaderOptionsPlugin({
-            debug: true
-        })
+        new CopyWebpackPlugin([ { from: "src/**/*.xml" } ], { copyUnmodified: true }),
+        new ExtractTextPlugin({ filename: "./src/com/mendix/widget/custom/slider/ui/Slider.css" }),
+        new webpack.LoaderOptionsPlugin({ debug: true })
     ]
 };

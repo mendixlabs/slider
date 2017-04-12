@@ -33,32 +33,6 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     private subscriptionHandles: number[];
     private attributeCallback: (mxObject: mendix.lib.MxObject) => () => void;
 
-    static parseStyle(style = ""): {[key: string]: string} {
-        try {
-            return style.split(";").reduce<{[key: string]: string}>((styleObject, line) => {
-                const pair = line.split(":");
-                if (pair.length === 2) {
-                    const name = pair[0].trim().replace(/(-.)/g, match => match[1].toUpperCase());
-                    styleObject[name] = pair[1].trim();
-                }
-                return styleObject;
-            }, {});
-        } catch (error) {
-            console.log("Failed to parse style", style, error);
-        }
-        return {};
-    }
-
-    static getValue<T>(attribute?: string, mxObject?: mendix.lib.MxObject, defaultValue?: T): number | T | undefined {
-        if (mxObject && attribute) {
-            if (mxObject.get(attribute)) {
-                return parseFloat(mxObject.get(attribute) as string);
-            }
-        }
-
-        return defaultValue;
-    }
-
     constructor(props: SliderContainerProps) {
         super(props);
 
@@ -131,12 +105,11 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         }
     }
 
-    private executeMicroflow(actionname: string, guid: string) {
-        if (actionname) {
-            window.mx.ui.action(actionname, {
-                error: (error) => window.mx.ui.error(
-                    `An error occurred while executing microflow: ${actionname}: ${error.message}`
-                ),
+    private executeMicroflow(actionName: string, guid: string) {
+        if (actionName) {
+            window.mx.ui.action(actionName, {
+                error: error =>
+                    window.mx.ui.error(`An error occurred while executing microflow: ${actionName}: ${error.message}`),
                 params: {
                     applyto: "selection",
                     guids: [ guid ]
@@ -147,24 +120,24 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     private resetSubscriptions(mxObject?: mendix.lib.MxObject) {
         this.subscriptionHandles.forEach(window.mx.data.unsubscribe);
+        this.subscriptionHandles = [];
 
         if (mxObject) {
-            this.subscriptionHandles.push(window.mx.data.subscribe({
-                callback: this.attributeCallback(mxObject),
-                guid: mxObject.getGuid()
-            }));
-            [
+            const attributes = [
                 this.props.valueAttribute,
                 this.props.maxAttribute,
                 this.props.minAttribute,
                 this.props.stepAttribute
-            ].forEach((attr) =>
-                this.subscriptionHandles.push(window.mx.data.subscribe({
-                    attr,
-                    callback: this.attributeCallback(mxObject),
-                    guid: mxObject.getGuid()
-                }))
-            );
+            ];
+            this.subscriptionHandles = attributes.map(attr => window.mx.data.subscribe({
+                attr,
+                callback: this.attributeCallback(mxObject),
+                guid: mxObject.getGuid()
+            }));
+            this.subscriptionHandles.push(window.mx.data.subscribe({
+                callback: this.attributeCallback(mxObject),
+                guid: mxObject.getGuid()
+            }));
         }
     }
 
@@ -207,6 +180,32 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         }
 
         return message.join(", ");
+    }
+
+    private static parseStyle(style = ""): {[key: string]: string} {
+        try {
+            return style.split(";").reduce<{[key: string]: string}>((styleObject, line) => {
+                const pair = line.split(":");
+                if (pair.length === 2) {
+                    const name = pair[0].trim().replace(/(-.)/g, match => match[1].toUpperCase());
+                    styleObject[name] = pair[1].trim();
+                }
+                return styleObject;
+            }, {});
+        } catch (error) {
+            console.log("Failed to parse style", style, error);
+        }
+        return {};
+    }
+
+    private static getValue<T>(attribute?: string, mxObject?: mendix.lib.MxObject, defaultValue?: T): number | T | undefined {
+        if (mxObject && attribute) {
+            if (mxObject.get(attribute)) {
+                return parseFloat(mxObject.get(attribute) as string);
+            }
+        }
+
+        return defaultValue;
     }
 }
 

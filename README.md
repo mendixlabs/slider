@@ -1,5 +1,5 @@
 # Slider
-Displays a value on a slider
+Change a number value using a slider
 
 ## Features
 * Adjust the slider value
