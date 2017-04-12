@@ -195,6 +195,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         } catch (error) {
             console.log("Failed to parse style", style, error);
         }
+
         return {};
     }
 

@@ -77,8 +77,6 @@
             <category>Appearance</category>
             <description>Bootstrap color to apply to the slider</description>
             <enumerationValues>
-                <enumerationValue key="default">Default</enumerationValue>
-                <enumerationValue key="inverse">Inverse</enumerationValue>
                 <enumerationValue key="primary">Primary</enumerationValue>
                 <enumerationValue key="info">Info</enumerationValue>
                 <enumerationValue key="success">Success</enumerationValue>
