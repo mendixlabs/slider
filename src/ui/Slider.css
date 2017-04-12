@@ -21,6 +21,9 @@
     background-color: transparent;
 }
 
+.widget-slider-no-value .rc-slider-track {
+    display: none;
+}
 .widget-slider-default .rc-slider-track {
     background-color: #DDDDDD;
  }

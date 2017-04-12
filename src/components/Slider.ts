@@ -52,7 +52,8 @@ class Slider extends Component<SliderProps, {}> {
                     "widget-slider",
                     `widget-slider-${this.props.bootstrapStyle}`,
                     this.props.className,
-                    { "has-error": !!alertMessage }
+                    { "has-error": !!alertMessage },
+                    { "widget-slider-no-value": typeof this.props.value !== "number" }
                 ),
                 style: this.props.style
             },
