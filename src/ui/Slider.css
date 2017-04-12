@@ -24,14 +24,7 @@
 .widget-slider-no-value .rc-slider-track {
     display: none;
 }
-.widget-slider-default .rc-slider-track {
-    background-color: #DDDDDD;
- }
- 
- .widget-slider-inverse .rc-slider-track {
-    background-color: #3D3F41;
- }
- 
+
  .widget-slider-primary .rc-slider-track{
     background-color: #59C2E6;
  }
@@ -39,15 +32,15 @@
 .widget-slider-info .rc-slider-track {
     background-color: #8AD4ED;
 }
- 
+
 .widget-slider-success .rc-slider-track {
     background-color: #8CC152;
 }
- 
+
 .widget-slider-warning .rc-slider-track {
     background-color: #f4a911;
 }
- 
+
 .widget-slider-danger .rc-slider-track {
     background-color: #D9534F;
 }

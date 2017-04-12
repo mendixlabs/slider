@@ -1,6 +1,6 @@
 import { Component, createElement } from "react";
 
-import { Slider } from "./Slider";
+import { BootstrapStyle, Slider } from "./Slider";
 
 interface WrapperProps {
     class?: string;
@@ -9,7 +9,7 @@ interface WrapperProps {
 }
 
 interface SliderContainerProps extends WrapperProps {
-    bootstrapStyle: string;
+    bootstrapStyle: BootstrapStyle;
     decimalPlaces: number;
     maxAttribute: string;
     minAttribute: string;

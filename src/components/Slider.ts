@@ -23,7 +23,7 @@ interface TooltipProps {
 
 interface SliderProps {
     alertMessage?: string;
-    bootstrapStyle?: string;
+    bootstrapStyle?: BootstrapStyle;
     className?: string;
     decimalPlaces?: number;
     disabled: boolean;
@@ -38,8 +38,11 @@ interface SliderProps {
     value: number | null;
 }
 
+type BootstrapStyle = "primary" | "success" | "info" | "warning" | "danger";
+
 class Slider extends Component<SliderProps, {}> {
     static defaultProps: SliderProps = {
+        bootstrapStyle: "info",
         disabled: false,
         value: 0
     };
@@ -73,7 +76,7 @@ class Slider extends Component<SliderProps, {}> {
         );
     }
 
-  private calculateMarks(): RcSlider.Marks {
+    private calculateMarks(): RcSlider.Marks {
         const marks: RcSlider.Marks = {};
         const { noOfMarkers, maxValue, minValue } = this.props;
         if ((noOfMarkers || noOfMarkers === 0) && (maxValue || maxValue === 0) && (minValue || minValue === 0)) {
@@ -139,4 +142,4 @@ class Slider extends Component<SliderProps, {}> {
     }
 }
 
-export { Slider, SliderProps };
+export { BootstrapStyle, Slider, SliderProps };
