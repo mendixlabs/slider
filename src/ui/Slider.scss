@@ -11,9 +11,10 @@
         }
     }
 
-    .rc-slider-mark-text {
-        width: auto !important;
-        margin-left: -4px !important;
+    /* correction to keep the marks on the edges readable*/
+    .rc-slider-mark {
+        left: 1%;
+        width: 98%;
     }
 
     .rc-slider {
@@ -25,6 +26,16 @@
             background-color: transparent;
         }
     }
+}
+
+/* Default margings and paddings */
+.widget-slider {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
 }
 
 .widget-slider-no-value {
