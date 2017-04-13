@@ -2,12 +2,12 @@
 
 .widget-slider {
     .rc-slider-handle, .rc-slider-dot-active {
-        border: 2px solid #e9e9e9;
+        border: 2px solid $brand-default;
     }
 
     &.has-error {
         &.rc-slider-track, .rc-slider-rail {
-            background-color: #a94442;
+            background-color: $brand-danger;
         }
     }
 
