@@ -4,46 +4,67 @@
     .rc-slider-handle, .rc-slider-dot-active {
         border: 2px solid #e9e9e9;
     }
+
+    &.has-error {
+        &.rc-slider-track, .rc-slider-rail {
+            background-color: #a94442;
+        }
+    }
+
+    .rc-slider-mark-text {
+        width: auto !important;
+        margin-left: -4px !important;
+    }
+
+    .rc-slider {
+        &.rc-slider-with-marks {
+            padding-bottom: 25px;
+        }
+
+        &.rc-slider-disabled {
+            background-color: transparent;
+        }
+    }
 }
 
-.widget-slider.has-error .rc-slider-track,
-.widget-slider.has-error .rc-slider-rail {
-    background-color: #a94442;
+.widget-slider-no-value {
+    .rc-slider-track {
+        display: none;
+    }
 }
 
-.widget-slider .rc-slider-mark-text {
-    width: auto !important;
-    margin-left: -4px !important;
+.widget-slider-primary {
+    .rc-slider-track {
+        background-color: $brand-primary;
+    }
 }
 
-.widget-slider .rc-slider.rc-slider-with-marks {
-    padding-bottom: 25px;
+.widget-slider-info {
+    .rc-slider-track {
+        background-color: $brand-info;
+    }
 }
 
-.widget-slider .rc-slider.rc-slider-disabled {
-    background-color: transparent;
+.widget-slider-success {
+    .rc-slider-track {
+        background-color: $brand-success;
+    }
 }
 
-.widget-slider-no-value .rc-slider-track {
-    display: none;
+.widget-slider-warning {
+    .rc-slider-track {
+        background-color: $brand-warning;
+    }
 }
 
- .widget-slider-primary .rc-slider-track{
-    background-color: #59C2E6;
- }
-
-.widget-slider-info .rc-slider-track {
-    background-color: #8AD4ED;
+.widget-slider-danger {
+    .rc-slider-track {
+        background-color: $brand-danger;
+    }
 }
 
-.widget-slider-success .rc-slider-track {
-    background-color: #8CC152;
-}
-
-.widget-slider-warning .rc-slider-track {
-    background-color: #f4a911;
-}
-
-.widget-slider-danger .rc-slider-track {
-    background-color: #D9534F;
+.widget-slider-inverse {
+    .rc-slider-track {
+        background-color: $brand-inverse;
+    }
 }

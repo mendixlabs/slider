@@ -38,7 +38,7 @@ interface SliderProps {
     value: number | null;
 }
 
-type BootstrapStyle = "primary" | "success" | "info" | "warning" | "danger";
+type BootstrapStyle = "primary" | "inverse" | "success" | "info" | "warning" | "danger";
 
 class Slider extends Component<SliderProps, {}> {
     static defaultProps: SliderProps = {
