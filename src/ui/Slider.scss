@@ -6,7 +6,7 @@
     }
 
     &.has-error {
-        &.rc-slider-track, .rc-slider-rail {
+        .rc-slider-track, .rc-slider-rail {
             background-color: $brand-danger;
         }
     }
