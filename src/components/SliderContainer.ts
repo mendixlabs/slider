@@ -122,12 +122,12 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     private updateValues(mxObject?: mendix.lib.MxObject): SliderContainerState {
-        const value = SliderContainer.getValue(this.props.valueAttribute, mxObject, null);
+        const value = this.getValue(this.props.valueAttribute, mxObject);
 
         return {
-            maximumValue: SliderContainer.getValue(this.props.maxAttribute, mxObject, undefined),
-            minimumValue: SliderContainer.getValue(this.props.minAttribute, mxObject, undefined),
-            stepValue: SliderContainer.getValue(this.props.stepAttribute, mxObject, this.props.stepValue),
+            maximumValue: this.getValue(this.props.maxAttribute, mxObject),
+            minimumValue: this.getValue(this.props.minAttribute, mxObject),
+            stepValue: this.getValue(this.props.stepAttribute, mxObject, this.props.stepValue),
             value: (value || value === 0) ? value : null
         };
     }
@@ -202,7 +202,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     // tslint:disable-next-line:max-line-length
-    private static getValue<T>(attribute: string, mxObject?: mendix.lib.MxObject, defaultValue?: T): number | T | undefined {
+    private getValue(attribute: string, mxObject?: mendix.lib.MxObject, defaultValue?: number): number | undefined {
         if (mxObject) {
             if (mxObject.get(attribute)) {
                 return parseFloat(mxObject.get(attribute) as string);
