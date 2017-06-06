@@ -6,6 +6,7 @@ interface WrapperProps {
     class: string;
     mxObject?: mendix.lib.MxObject;
     style: string;
+    readOnly: boolean;
 }
 
 interface SliderContainerProps extends WrapperProps {
@@ -44,8 +45,8 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     render() {
-        const disabled = !this.props.mxObject
-            || !!(this.props.stepAttribute && this.props.mxObject.isReadonlyAttr(this.props.stepAttribute));
+        const disabled = !this.props.mxObject || this.props.readOnly
+            || !!(this.props.valueAttribute && this.props.mxObject.isReadonlyAttr(this.props.valueAttribute));
 
         const alertMessage = !disabled ? SliderContainer.validateSettings(this.state) || this.validateValues() : "";
 
