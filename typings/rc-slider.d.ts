@@ -1,6 +1,7 @@
+/* tslint:disable */
 declare module "rc-slider" {
     export interface Marks {
-        [number: number]: JSX.Element | string | { style: any, label: string | JSX.Element };
+        [value: number]: JSX.Element | string | { style: any, label: string | JSX.Element };
     }
 
     interface CommonApiProps {
@@ -10,15 +11,15 @@ declare module "rc-slider" {
         marks?: Marks;
         step?: number;
         vertical?: boolean;
-        handle?(props: any): React.ReactNode;
         included?: boolean;
         disabled?: boolean;
         dots?: boolean;
+        tipTransitionName?: string;
+        tipFormatter?: ((value: any) => any | undefined) | null;
+        handle?(props: any): React.ReactNode;
         onBeforeChange?(value: any): any | undefined;
         onChange?(value: any): any | undefined;
         onAfterChange?(value: any): any | undefined;
-        tipTransitionName?: string;
-        tipFormatter?: ((value: any) => any | undefined) | null;
     }
 
     interface SliderProps extends CommonApiProps {
@@ -43,5 +44,4 @@ declare module "rc-slider" {
     export class Range extends React.Component<RangeProps, {}> { }
     export class Handle extends React.Component<HandleProps, {}> { }
     export default class Slider extends React.Component<SliderProps, {}> { }
-
 }

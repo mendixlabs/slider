@@ -1,3 +1,4 @@
+/* tslint:disable */
 declare module "rc-tooltip" {
     type Trigger = "hover" | "click" | "focus";
     type Placement =
