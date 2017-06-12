@@ -48,7 +48,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         const disabled = !this.props.mxObject || this.props.readOnly
             || !!(this.props.valueAttribute && this.props.mxObject.isReadonlyAttr(this.props.valueAttribute));
 
-        const alertMessage = !disabled ? SliderContainer.validateSettings(this.state) || this.validateValues() : "";
+        const alertMessage = !disabled ? this.validateSettings(this.state) || this.validateValues() : "";
 
         return createElement(Slider, {
             alertMessage,
@@ -95,7 +95,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         return {};
     }
 
-    public static validateSettings(state: SliderContainerState): string {
+    private validateSettings(state: SliderContainerState): string {
         const message: string[] = [];
         const { minimumValue, maximumValue, stepValue } = state;
         const validMax = typeof maximumValue === "number";

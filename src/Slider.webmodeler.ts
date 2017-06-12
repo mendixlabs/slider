@@ -7,19 +7,11 @@ declare function require(name: string): string;
 // tslint:disable-next-line:class-name
 export class preview extends Component<SliderContainerProps, {}> {
     render() {
-        const warnings = SliderContainer.validateSettings({
-            maximumValue: 100,
-            minimumValue: 0,
-            stepValue: this.props.stepValue,
-            value: 50
-        });
-
-        return createElement(Slider, this.transformProps(this.props, warnings));
+        return createElement(Slider, this.transformProps(this.props));
     }
 
-    private transformProps(props: SliderContainerProps, warnings: string): SliderProps {
+    private transformProps(props: SliderContainerProps): SliderProps {
         return {
-            alertMessage: warnings,
             bootstrapStyle: props.bootstrapStyle,
             className: props.class,
             decimalPlaces: props.decimalPlaces,
