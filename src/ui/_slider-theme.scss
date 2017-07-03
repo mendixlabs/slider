@@ -1,6 +1,6 @@
 .widget-slider {
     .rc-slider-handle, .rc-slider-dot-active {
-        border: 2px solid $brand-default;
+        border-color: $brand-default;
         &:active {
             border-color: $brand-default;
         }
