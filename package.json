@@ -80,7 +80,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
-    "rc-slider": "^8.0.2",
+    "jasmine-core": "^2.7.0",
+    "rc-slider": "^8.3.0",
     "rc-tooltip": "^3.4.6"
   }
 }

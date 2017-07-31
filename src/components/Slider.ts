@@ -6,7 +6,7 @@ import Tooltip from "rc-tooltip";
 
 import { Alert } from "./Alert";
 
-import "rc-slider/dist/rc-slider.css";
+import "rc-slider/assets/index.css";
 import "../ui/Slider.scss";
 
 interface TooltipOptions {
