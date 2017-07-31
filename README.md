@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/mendixlabs/slider.svg?branch=master)](https://travis-ci.org/mendixlabs/slider)
+[![Dependency Status](https://david-dm.org/mendixlabs/slider.svg)](https://david-dm.org/mendixlabs/slider)
+[![Dev Dependency Status](https://david-dm.org/mendixlabs/slider.svg#info=devDependencies)](https://david-dm.org/mendixlabs/slider#info=devDependencies)
+[![codecov](https://codecov.io/gh/mendixlabs/slider/branch/master/graph/badge.svg)](https://codecov.io/gh/mendixlabs/slider)
+
 # Slider
 Change a number value using a slider
 
