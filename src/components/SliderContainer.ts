@@ -21,6 +21,7 @@ interface SliderContainerProps extends WrapperProps {
     stepAttribute: string;
     tooltipText: string;
     valueAttribute: string;
+    editable: "default" | "never";
 }
 
 interface SliderContainerState {
@@ -45,8 +46,10 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 
     render() {
-        const disabled = !this.props.mxObject || this.props.readOnly
-            || !!(this.props.valueAttribute && this.props.mxObject.isReadonlyAttr(this.props.valueAttribute));
+        const { mxObject, readOnly, valueAttribute } = this.props;
+        const disabled = this.props.editable === "default"
+            ? (!mxObject || readOnly || !!(valueAttribute && mxObject.isReadonlyAttr(valueAttribute)))
+            : true;
 
         const alertMessage = !disabled ? this.validateSettings(this.state) || this.validateValues() : "";
 
