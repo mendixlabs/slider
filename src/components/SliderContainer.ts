@@ -4,7 +4,8 @@ import { BootstrapStyle, Slider } from "./Slider";
 
 interface WrapperProps {
     class: string;
-    mxObject?: mendix.lib.MxObject;
+    mxform: mxui.lib.form._FormBase;
+    mxObject: mendix.lib.MxObject;
     style: string;
     readOnly: boolean;
 }
@@ -16,12 +17,18 @@ interface SliderContainerProps extends WrapperProps {
     minAttribute: string;
     noOfMarkers: number;
     onChangeMicroflow: string;
+    onChangeNanoflow: Nanoflow;
     readOnly: boolean;
     stepValue: number;
     stepAttribute: string;
     tooltipText: string;
     valueAttribute: string;
     editable: "default" | "never";
+}
+
+interface Nanoflow {
+    nanoflow: object[];
+    paramsSpec: { Progress: string };
 }
 
 interface SliderContainerState {
@@ -149,19 +156,34 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     private handleAction(value: number) {
         if ((value || value === 0) && this.props.mxObject) {
-            this.executeMicroflow(this.props.onChangeMicroflow, this.props.mxObject.getGuid());
+            this.handleChange();
         }
     }
 
-    private executeMicroflow(actionName: string, guid: string) {
-        if (actionName) {
-            window.mx.ui.action(actionName, {
+    private handleChange() {
+        const { mxform, mxObject, onChangeMicroflow, onChangeNanoflow } = this.props;
+        if (onChangeMicroflow) {
+            window.mx.ui.action(onChangeMicroflow, {
                 error: error =>
-                    window.mx.ui.error(`An error occurred while executing microflow: ${actionName}: ${error.message}`),
+                    window.mx.ui.error(`An error occurred while executing microflow: ${onChangeMicroflow}: ${error.message}`),
+                origin: mxform,
                 params: {
                     applyto: "selection",
-                    guids: [ guid ]
+                    guids: [ mxObject.getGuid() ]
                 }
+            });
+        }
+
+        if (onChangeNanoflow.nanoflow) {
+            const context = new mendix.lib.MxContext();
+            context.setContext(mxObject.getEntity(), mxObject.getGuid());
+            window.mx.data.callNanoflow({
+                context,
+                error: error => window.mx.ui.error(
+                    `An error occurred while executing nanoflow: + ${onChangeNanoflow} : ${error.message}`
+                ),
+                nanoflow: onChangeNanoflow,
+                origin: mxform
             });
         }
     }
