@@ -180,7 +180,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             window.mx.data.callNanoflow({
                 context,
                 error: error => window.mx.ui.error(
-                    `An error occurred while executing nanoflow: + ${onChangeNanoflow} : ${error.message}`
+                    `An error occurred while executing the on change nanoflow: ${error.message}`
                 ),
                 nanoflow: onChangeNanoflow,
                 origin: mxform
