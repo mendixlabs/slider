@@ -9,32 +9,47 @@
         <property key="valueAttribute" required="false" type="attribute">
             <caption>Value attribute</caption>
             <category>Data source</category>
-            <description>The selected value on the slider</description>
+            <description>The selected value on the slider, if not provided 'static value' will be used</description>
             <attributeTypes>
                 <attributeType name="Integer"/>
                 <attributeType name="Long"/>
                 <attributeType name="Decimal"/>
             </attributeTypes>
         </property>
-        <property key="minAttribute" type="attribute">
+        <property key="staticValue" type="integer" defaultValue="50">
+            <caption>Static value</caption>
+            <category>Data source</category>
+            <description/>
+        </property>
+        <property key="minAttribute" type="attribute" required="false">
             <caption>Minimum attribute</caption>
             <category>Data source</category>
-            <description>Holds the minimum slider value</description>
+            <description>Holds the minimum slider value, if not provided 'static minimum value' will be used</description>
             <attributeTypes>
                 <attributeType name="Integer"/>
                 <attributeType name="Long"/>
                 <attributeType name="Decimal"/>
             </attributeTypes>
         </property>
-        <property key="maxAttribute" type="attribute">
+        <property key="staticMinimumValue" type="integer" defaultValue="0">
+            <caption>Static minimum value</caption>
+            <category>Data source</category>
+            <description/>
+        </property>
+        <property key="maxAttribute" type="attribute" required="false">
             <caption>Maximum attribute</caption>
             <category>Data source</category>
-            <description>Holds the maximum slider value</description>
+            <description>Holds the maximum slider value, if not provided 'static maximum value' will be used</description>
             <attributeTypes>
                 <attributeType name="Integer"/>
                 <attributeType name="Long"/>
                 <attributeType name="Decimal"/>
             </attributeTypes>
+        </property>
+        <property key="staticMaximumValue" type="integer" defaultValue="100">
+            <caption>Static maximum value</caption>
+            <category>Data source</category>
+            <description/>
         </property>
         <property key="editable" type="enumeration" defaultValue="default">
             <caption>Editable</caption>

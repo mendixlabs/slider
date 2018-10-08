@@ -24,6 +24,9 @@ interface SliderContainerProps extends WrapperProps {
     tooltipText: string;
     valueAttribute: string;
     editable: "default" | "never";
+    staticMaximumValue: number;
+    staticMinimumValue: number;
+    staticValue: number;
 }
 
 interface Nanoflow {
@@ -143,10 +146,10 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         const value = this.getValue(this.props.valueAttribute, mxObject);
 
         return {
-            maximumValue: this.getValue(this.props.maxAttribute, mxObject),
-            minimumValue: this.getValue(this.props.minAttribute, mxObject),
+            maximumValue: this.getValue(this.props.maxAttribute, mxObject, this.props.staticMaximumValue),
+            minimumValue: this.getValue(this.props.minAttribute, mxObject, this.props.staticMinimumValue),
             stepValue: this.getValue(this.props.stepAttribute, mxObject, this.props.stepValue),
-            value: (value || value === 0) ? value : null
+            value: (value || value === 0) ? value : this.props.staticValue
         };
     }
 
