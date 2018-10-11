@@ -1,14 +1,15 @@
 "use strict";
 const webpack = require("webpack");
-const merge = require("webpack-merge");
 const webpackConfig = require("./webpack.config");
+const merge = require("webpack-merge");
 
 const webpackConfigRelease = webpackConfig.map(config => merge(config, {
     devtool: false,
     mode: "production",
-    optimization: { minimize: true }
+    optimization: {
+        minimize: true
+    }
 }));
-
 
 module.exports = function(grunt) {
     const pkg = grunt.file.readJSON("package.json");
@@ -16,16 +17,11 @@ module.exports = function(grunt) {
 
         watch: {
             updateWidgetFiles: {
-                files: [ "./dist/tmp/src/**/*" ],
-                tasks: [ "webpack:develop", "file_append", "compress:dist", "copy:distDeployment", "copy:mpk" ],
-                options: {
-                    debounceDelay: 250,
-                    livereload: true
-                }
-            },
-            sourceFiles: {
                 files: [ "./src/**/*" ],
-                tasks: [ "copy:source" ]
+                tasks: [ "webpack:develop", "file_append", "compress:dist", "copy" ],
+                options: {
+                    debounceDelay: 250
+                }
             }
         },
 
@@ -61,22 +57,14 @@ module.exports = function(grunt) {
                     src: [ pkg.widgetName + ".mpk" ],
                     expand: true
                 } ]
-            },
-            source: {
-                files: [ {
-                    dest: "./dist/tmp/src",
-                    cwd: "./src/",
-                    src: [ "**/*", "!**/*.ts", "!**/*.css" ],
-                    expand: true
-                } ]
             }
         },
 
         file_append: {
             addSourceURL: {
                 files: [ {
-                    append: "\n\n//# sourceURL=Slider.webmodeler.js\n",
-                    input: "dist/tmp/src/Slider.webmodeler.js"
+                    append: `\n\n//# sourceURL=${pkg.widgetName}.webmodeler.js\n`,
+                    input: `dist/tmp/src/${pkg.widgetName}.webmodeler.js`
                 } ]
             }
         },
@@ -112,12 +100,12 @@ module.exports = function(grunt) {
     grunt.registerTask(
         "clean build",
         "Compiles all the assets and copies the files to the dist directory.",
-        [ "checkDependencies", "clean:build", "webpack:develop", "file_append", "compress:dist", "copy:mpk" ]
+        [ "checkDependencies", "clean:build", "webpack:develop", "file_append", "compress:dist", "copy" ]
     );
     grunt.registerTask(
         "release",
         "Compiles all the assets and copies the files to the dist directory. Minified without source mapping",
-        [ "checkDependencies", "clean:build", "webpack:release", "file_append", "compress:dist", "copy:mpk" ]
+        [ "checkDependencies", "clean:build", "webpack:release", "file_append", "compress:dist", "copy" ]
     );
     grunt.registerTask("build", [ "clean build" ]);
 };
