@@ -9,22 +9,17 @@
         <property key="valueAttribute" required="false" type="attribute">
             <caption>Value attribute</caption>
             <category>Data source</category>
-            <description>The selected value on the slider, if not provided 'static value' will be used</description>
+            <description>The selected value on the slider</description>
             <attributeTypes>
                 <attributeType name="Integer"/>
                 <attributeType name="Long"/>
                 <attributeType name="Decimal"/>
             </attributeTypes>
         </property>
-        <property key="staticValue" type="integer" defaultValue="50">
-            <caption>Static value</caption>
-            <category>Data source</category>
-            <description/>
-        </property>
         <property key="minAttribute" type="attribute" required="false">
             <caption>Minimum attribute</caption>
             <category>Data source</category>
-            <description>Holds the minimum slider value, if not provided 'static minimum value' will be used</description>
+            <description>Holds the minimum slider value</description>
             <attributeTypes>
                 <attributeType name="Integer"/>
                 <attributeType name="Long"/>
@@ -34,12 +29,12 @@
         <property key="staticMinimumValue" type="integer" defaultValue="0">
             <caption>Static minimum value</caption>
             <category>Data source</category>
-            <description/>
+            <description>The minimum slider value (used when 'Minimum attribute' is not selected or does not contain a value)</description>
         </property>
         <property key="maxAttribute" type="attribute" required="false">
             <caption>Maximum attribute</caption>
             <category>Data source</category>
-            <description>Holds the maximum slider value, if not provided 'static maximum value' will be used</description>
+            <description>Holds the maximum slider value</description>
             <attributeTypes>
                 <attributeType name="Integer"/>
                 <attributeType name="Long"/>
@@ -49,7 +44,7 @@
         <property key="staticMaximumValue" type="integer" defaultValue="100">
             <caption>Static maximum value</caption>
             <category>Data source</category>
-            <description/>
+            <description>The maximum slider value (used when 'Maximum attribute' is not selected or does not contain a value)</description>
         </property>
         <property key="editable" type="enumeration" defaultValue="default">
             <caption>Editable</caption>
@@ -100,7 +95,7 @@
         <property key="stepValue" type="integer" defaultValue="10">
             <caption>Step value</caption>
             <category>Appearance</category>
-            <description>Number of points to shift when sliding (used if step attribute is not set)</description>
+            <description>Number of points to shift when sliding (used if 'Step attribute' is not set)</description>
         </property>
         <property key="bootstrapStyle" type="enumeration" defaultValue="primary">
             <caption>Slider style</caption>
