@@ -43,6 +43,8 @@ interface SliderContainerState {
 class SliderContainer extends Component<SliderContainerProps, SliderContainerState> {
     private subscriptionHandles: number[];
     private attributeCallback: (mxObject: mendix.lib.MxObject) => () => void;
+    private selfUpdate = false;
+    private previousValue?: number;
 
     constructor(props: SliderContainerProps) {
         super(props);
@@ -51,7 +53,13 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         this.subscriptionHandles = [];
         this.handleAction = this.handleAction.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
-        this.attributeCallback = mxObject => () => this.setState(this.updateValues(mxObject));
+        this.attributeCallback = mxObject => () => {
+            if (this.selfUpdate) {
+                this.selfUpdate = false;
+                return;
+            }
+            this.setState(this.updateValues(mxObject));
+        };
     }
 
     render() {
@@ -143,7 +151,7 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     private updateValues(mxObject?: mendix.lib.MxObject): SliderContainerState {
         const value = this.getValue(this.props.valueAttribute, mxObject);
-
+        this.previousValue = value;
         return {
             maximumValue: this.getValue(this.props.maxAttribute, mxObject, this.props.staticMaximumValue),
             minimumValue: this.getValue(this.props.minAttribute, mxObject, this.props.staticMinimumValue),
@@ -156,6 +164,8 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
         const { mxObject, valueAttribute } = this.props;
         const { maximumValue } = this.state;
         if ((value || value === 0) && mxObject) {
+            this.selfUpdate = true;
+            this.setState({ value });
             if ((maximumValue || maximumValue === 0) && (value > maximumValue)) {
                 mxObject.set(valueAttribute, maximumValue);
             } else {
@@ -166,6 +176,8 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
 
     private handleAction(value: number) {
         if ((value || value === 0) && this.props.mxObject) {
+            if (this.previousValue === value) return;
+            this.previousValue = value;
             this.handleChange();
         }
     }

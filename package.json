@@ -53,6 +53,7 @@
     "istanbul": "^0.4.3",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine": "^3.3.0",
+    "jasmine-core": "^3.3.0",
     "json-loader": "^0.5.4",
     "karma": "^3.1.1",
     "karma-chrome-launcher": "^2.0.0",
@@ -84,7 +85,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "jasmine-core": "^3.3.0",
     "rc-slider": "^8.6.3",
     "rc-tooltip": "^3.7.3"
   }
