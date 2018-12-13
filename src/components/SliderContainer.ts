@@ -156,26 +156,33 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
             maximumValue: this.getValue(this.props.maxAttribute, mxObject, this.props.staticMaximumValue),
             minimumValue: this.getValue(this.props.minAttribute, mxObject, this.props.staticMinimumValue),
             stepValue: this.getValue(this.props.stepAttribute, mxObject, this.props.stepValue),
-            value: (value || value === 0) ? value : null
+            value: value !== undefined ? value : null
         };
     }
 
     private onUpdate(value: number) {
         const { mxObject, valueAttribute } = this.props;
-        const { maximumValue } = this.state;
-        if ((value || value === 0) && mxObject) {
-            this.selfUpdate = true;
+        if (value !== undefined && mxObject) {
             this.setState({ value });
-            if ((maximumValue || maximumValue === 0) && (value > maximumValue)) {
-                mxObject.set(valueAttribute, maximumValue);
-            } else {
+            if (this.validValue(value)) {
+                this.selfUpdate = true;
                 mxObject.set(valueAttribute, value);
             }
         }
     }
 
+    private validValue(value: number) {
+        const { minimumValue, maximumValue } = this.state;
+        return typeof minimumValue === "number"
+            && typeof maximumValue === "number"
+            && typeof value === "number"
+            && minimumValue <= maximumValue
+            && value >= minimumValue
+            && value <= maximumValue;
+    }
+
     private handleAction(value: number) {
-        if ((value || value === 0) && this.props.mxObject) {
+        if (value !== undefined && this.props.mxObject) {
             if (this.previousValue === value) return;
             this.previousValue = value;
             this.handleChange();
