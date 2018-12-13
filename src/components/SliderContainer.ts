@@ -1,4 +1,5 @@
 import { Component, createElement } from "react";
+import { hot } from "react-hot-loader";
 
 import { BootstrapStyle, Slider } from "./Slider";
 
@@ -10,7 +11,7 @@ interface WrapperProps {
     readOnly: boolean;
 }
 
-interface SliderContainerProps extends WrapperProps {
+export interface SliderContainerProps extends WrapperProps {
     bootstrapStyle: BootstrapStyle;
     decimalPlaces: number;
     maxAttribute: string;
@@ -267,4 +268,4 @@ class SliderContainer extends Component<SliderContainerProps, SliderContainerSta
     }
 }
 
-export { SliderContainer as default, SliderContainerProps };
+export default hot(module)(SliderContainer);
