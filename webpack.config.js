@@ -17,7 +17,7 @@ const widgetConfig = {
         path: path.resolve(__dirname, "dist/tmp"),
         filename: (chunkData) => {
             const fileName = chunkData.chunk.name === "main" ? widgetName : "[name]";
-            return `src/com/mendix/widget/custom/${name}/${fileName}.js`
+            return `widgets/com/mendix/widget/custom/${name}/${fileName}.js`;
         },
         libraryTarget: "umd",
     },
